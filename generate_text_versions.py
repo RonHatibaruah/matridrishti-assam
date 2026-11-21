@@ -75,14 +75,15 @@ def generate_proposal_text():
     header += "=" * 80 + "\n\n"
     
     # Split into fields
-    field_pattern = r'## (Field \d+:.*?)(?=\n## Field |\Z)'
+    # Match both '## Field \d+:' and '## 03: Supporting Material'
+    field_pattern = r'## ((?:Field \d+|03: Supporting Material).*?)(?=\n## (?:Field \d+|03: Supporting Material)|\Z)'
     fields = re.findall(field_pattern, raw, flags=re.DOTALL)
     
     field_texts = []
     for f in fields:
         lines = f.strip().split('\n')
         field_header = lines[0].strip()
-        field_num_match = re.search(r'Field (\d+)', field_header)
+        field_num_match = re.search(r'(Field \d+|03: Supporting Material)', field_header)
         field_num = field_num_match.group(1) if field_num_match else "?"
         
         field_body = '\n'.join(lines[1:]).strip()
@@ -95,7 +96,7 @@ def generate_proposal_text():
         word_count = len(re.findall(r'\b\w+\b', cleaned_body))
         
         block = f"{'='*80}\n"
-        block += f"COPY-PASTE BLOCK: FIELD {field_num}{limit_str}\n"
+        block += f"COPY-PASTE BLOCK: {field_num.upper()}{limit_str}\n"
         block += f"Actual Word Count: {word_count} words\n"
         block += f"{'='*80}\n\n"
         block += cleaned_body + "\n\n"
@@ -105,6 +106,12 @@ def generate_proposal_text():
     full_output = header + "".join(field_texts)
     
     with open(out_file, 'w', encoding='utf-8') as f:
+        f.write(full_output)
+        
+    # Also copy to public/downloads/
+    pub_dir = os.path.join(base_dir, 'public', 'downloads')
+    os.makedirs(pub_dir, exist_ok=True)
+    with open(os.path.join(pub_dir, 'NESFIC_D23_Proposal_Ron_Hatibaruah.txt'), 'w', encoding='utf-8') as f:
         f.write(full_output)
         
     print(f"Generated text version: {out_file} ({len(full_output)} bytes)")
@@ -130,6 +137,11 @@ def generate_pow_text():
     full_output = header + cleaned
     
     with open(out_file, 'w', encoding='utf-8') as f:
+        f.write(full_output)
+        
+    pub_dir = os.path.join(base_dir, 'public', 'downloads')
+    os.makedirs(pub_dir, exist_ok=True)
+    with open(os.path.join(pub_dir, 'NESFIC_D23_Proof_of_Work_Ron_Hatibaruah.txt'), 'w', encoding='utf-8') as f:
         f.write(full_output)
         
     print(f"Generated text version: {out_file} ({len(full_output)} bytes)")

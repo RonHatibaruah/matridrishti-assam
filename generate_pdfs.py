@@ -486,3 +486,10 @@ if __name__ == '__main__':
     
     build_proposal_pdf(proposal_pdf)
     build_proof_of_work_pdf(pow_pdf)
+    
+    import shutil
+    pub_dir = os.path.join(base_dir, 'public', 'downloads')
+    os.makedirs(pub_dir, exist_ok=True)
+    shutil.copy2(proposal_pdf, os.path.join(pub_dir, 'NESFIC_D23_Proposal_Ron_Hatibaruah.pdf'))
+    shutil.copy2(pow_pdf, os.path.join(pub_dir, 'NESFIC_D23_Proof_of_Work_Ron_Hatibaruah.pdf'))
+    print(f"Copied PDFs to {pub_dir}")
