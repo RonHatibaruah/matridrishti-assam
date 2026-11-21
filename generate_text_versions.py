@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
 Generate clean, copy-paste-ready, textarea-compliant plain text files for NESFIC 2026:
-1. NESFIC_D35_Proposal_Ron_Hatibaruah.txt (Field-by-field copy-paste textarea blocks)
-2. NESFIC_D35_Proof_of_Work_Ron_Hatibaruah.txt (Full and modular copy-paste textarea blocks)
+1. NESFIC_D23_Proposal_Ron_Hatibaruah.txt (Field-by-field copy-paste textarea blocks)
+2. NESFIC_D23_Proof_of_Work_Ron_Hatibaruah.txt (Full and modular copy-paste textarea blocks)
 """
 
 import os
@@ -58,7 +58,7 @@ def clean_text_for_textarea(text):
 
 def generate_proposal_text():
     src_file = os.path.join(base_dir, 'proposal_contents.md')
-    out_file = os.path.join(base_dir, 'NESFIC_D35_Proposal_Ron_Hatibaruah.txt')
+    out_file = os.path.join(base_dir, 'NESFIC_D23_Proposal_Ron_Hatibaruah.txt')
     
     with open(src_file, 'r', encoding='utf-8') as f:
         raw = f.read()
@@ -66,13 +66,12 @@ def generate_proposal_text():
     # Extract header info
     header = "=" * 80 + "\n"
     header += "NESFIC 2026 - STREAM 1 (GOVERNMENT TRACK) - UNIFORM SOLUTION PROPOSAL (USPR)\n"
-    header += "Problem Statement ID: NESFIC-D-35: Agricultural Commodity Price Intelligence and Forecasting\n"
-    header += "Sponsoring Department: Department of Agriculture ● Government of Assam\n"
-    header += "Technical Partners: ASAMB (Assam Agricultural Marketing Board) & AAU Jorhat AMIU\n"
+    header += "Problem Statement ID: NESFIC-D-23: Early Detection of Pregnancy-Induced Hypertension (PIH)\n"
+    header += "Sponsoring Department: Department of Health & Family Welfare ● National Health Mission (NHM), Assam\n"
     header += "Applicant / Innovator: Ron Hatibaruah\n"
-    header += "Solution: KrishiDrishti (Assam Agri-Price Sentinel)\n"
-    header += "Live Prototype: https://krishidrishti-assam.pages.dev/\n"
-    header += "GitHub Repository: https://github.com/RonHatibaruah/krishidrishti-assam\n"
+    header += "Solution: MatriDrishti (Assam Maternal Hypertensive Sentinel)\n"
+    header += "Live Prototype: https://matridrishti-assam.pages.dev/\n"
+    header += "GitHub Repository: https://github.com/RonHatibaruah/matridrishti-assam\n"
     header += "=" * 80 + "\n\n"
     
     # Split into fields
@@ -112,20 +111,19 @@ def generate_proposal_text():
 
 def generate_pow_text():
     src_file = os.path.join(base_dir, 'proof_of_work_dossier.md')
-    out_file = os.path.join(base_dir, 'NESFIC_D35_Proof_of_Work_Ron_Hatibaruah.txt')
+    out_file = os.path.join(base_dir, 'NESFIC_D23_Proof_of_Work_Ron_Hatibaruah.txt')
     
     with open(src_file, 'r', encoding='utf-8') as f:
         raw = f.read()
         
     header = "=" * 80 + "\n"
     header += "NESFIC 2026 - STREAM 1 - PROOF OF WORK & TECHNICAL EVIDENCE DOSSIER\n"
-    header += "Problem Statement ID: NESFIC-D-35: Agricultural Commodity Price Intelligence and Forecasting\n"
-    header += "Sponsoring Department: Department of Agriculture ● Government of Assam\n"
-    header += "Technical Partners: ASAMB & AAU Jorhat AMIU\n"
+    header += "Problem Statement ID: NESFIC-D-23: Early Detection of Pregnancy-Induced Hypertension (PIH)\n"
+    header += "Sponsoring Department: Department of Health & Family Welfare ● National Health Mission (NHM), Assam\n"
     header += "Applicant / Innovator: Ron Hatibaruah\n"
-    header += "Solution: KrishiDrishti (Assam Agri-Price Sentinel)\n"
-    header += "Live Prototype: https://krishidrishti-assam.pages.dev/\n"
-    header += "GitHub Repository: https://github.com/RonHatibaruah/krishidrishti-assam\n"
+    header += "Solution: MatriDrishti (Assam Maternal Hypertensive Sentinel)\n"
+    header += "Live Prototype: https://matridrishti-assam.pages.dev/\n"
+    header += "GitHub Repository: https://github.com/RonHatibaruah/matridrishti-assam\n"
     header += "=" * 80 + "\n\n"
     
     cleaned = clean_text_for_textarea(raw)

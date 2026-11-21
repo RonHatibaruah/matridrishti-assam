@@ -1,0 +1,44 @@
+[
+  {
+    "diagram_id": 1,
+    "filename": "diagram_1_before_after_workflow.jpg",
+    "title": "Clinical Paradigm Shift: Reactive Crisis Intervention to Proactive AI Sentinel",
+    "prompt": "A visionary 16:9 widescreen technological architectural infographic on a clean white and light-gray blueprint grid background illustrating CLINICAL PARADIGM SHIFT: TRANSFORMATION FROM REACTIVE CRISIS TO PROACTIVE PIH SENTINEL. The header features bold dark navy typography with subtitle Early Hemodynamic Detection, Frontline BLE Triage & Closed-Loop Referral Pathways in Assam (Govt of Assam Health & Family Welfare & NHM, NESFIC-D-23). The visual presents a dramatic side-by-side transformation: On the left (soft rose and muted red palette), CURRENT FRAGMENTED FIELD REALITY showing uncalibrated manual mercury sphygmomanometers, terminal digit bias rounding (120/80 mmHg), missed 16-week low-dose aspirin windows, and emergency ambulance delays. On the right (clean emerald green, teal, and cyan palette), MATRIDRISHTI AI ECOSYSTEM showing Bluetooth Low Energy (BLE) validated digital BP cuffs with auto-capture, longitudinal Mean Arterial Pressure (MAP) velocity tracking, point-of-care Clinical Decision Support (CDSS), Assamese bilingual audio advisories, and automated 108 Mrityunjoy ambulance dispatch with pre-arrival FRU obstetric ICU bed reservation. Includes metric badges: Assam MMR ~195 per 100k, HDP 24%+ Mortality, +65% Earlier Detection, and -38% Convulsion Events. Clean 2D flat vector aesthetic, royal blue, cyan, emerald green, and gold accents, ultra-sharp typography."
+  },
+  {
+    "diagram_id": 2,
+    "filename": "diagram_2_system_architecture.jpg",
+    "title": "Enterprise System Architecture: Frontline BLE to ASDC Clinical Cloud",
+    "prompt": "A structured 16:9 widescreen enterprise technology blueprint infographic on a clean white and subtle grid background illustrating MATRIDRISHTI ENTERPRISE SYSTEM ARCHITECTURE: FRONTLINE IOT TO ASDC CLINICAL CLOUD. The header features bold dark navy typography with subtitle Ayushman Bharat Digital Mission (ABDM) Compliant • Offline-First Edge Sync • TimescaleDB Vitals Vault. The layout presents four vertical architectural layers: 1) Layer 1 (Cyan / Electric Blue): Frontline Telemetry Layer (CDSCO-approved BLE BP Cuffs, MobileNetV3 Optical OCR scanner, and dipstick proteinuria analyzer); 2) Layer 2 (Teal): Offline-First Mobile Edge (React Native, WatermelonDB SQLite storage, AES-256 local queue, CRDT bi-directional sync); 3) Layer 3 (Deep Purple): ASDC Clinical AI Core (XGBoost MAP risk model, GoI CDSS clinical rules, TimescaleDB vitals vault, PostGIS geospatial engine); 4) Layer 4 (Crimson / Coral): Closed-Loop Emergency Referral & Governance (GVK EMRI 108 CAD dispatch API, FRU obstetric ICU bed reservation, WhatsApp Cloud advisory bus, and NHM State Command Dashboard). Clean 2D flat vector aesthetic, crisp borders, dark navy, emerald green, and cyan corporate palette."
+  },
+  {
+    "diagram_id": 3,
+    "filename": "diagram_3_ai_risk_model.jpg",
+    "title": "Hemodynamic Trajectory & AI Risk Prediction: Mean Arterial Pressure (MAP)",
+    "prompt": "A master medical engineering reference infographic in 16:9 widescreen format on a clean white blueprint background with subtle technical gridlines illustrating HEMODYNAMIC TRAJECTORY & AI RISK PREDICTION: MEAN ARTERIAL PRESSURE (MAP). The header displays bold dark navy typography with subtitle Mathematical Formulations • Longitudinal Velocity (Delta MAP / Delta t) • Multi-Factor XGBoost Model. The left side presents mathematical formula cards: 1) MAP = (2*DBP + SBP)/3; 2) Longitudinal Velocity = Delta MAP / Delta weeks; 3) Asymmetric Clinical Loss Function with weight w_crit = 4.5 prioritizing 94.2% sensitivity. The right side features a high-precision gestational trajectory plot comparing normal pregnancy (physiological mid-trimester dip) against abnormal pre-eclampsia slope, highlighting the 12 to 16 week Aspirin prophylaxis window and three color-coded risk tiers: Green (Normal), Amber (Moderate), and Red (Critical). Clean 2D flat vector aesthetic, dark navy, cyan, emerald green, and amber diagnostic badges, crisp mathematical notation."
+  },
+  {
+    "diagram_id": 4,
+    "filename": "diagram_4_assam_epidemiology_map.jpg",
+    "title": "Assam Statewide Epidemiological Surveillance & Vulnerability Mapping",
+    "prompt": "An authoritative, high-contrast 16:9 widescreen geospatial health intelligence infographic on a clean white background with subtle technical blueprint gridlines illustrating ASSAM STATEWIDE EPIDEMIOLOGICAL SURVEILLANCE & VULNERABILITY MAPPING. The header features bold dark navy typography with subtitle 35 Districts Coverage • Upper Assam Tea Belts • Riverine Char Islands • NHM Boat Clinics • FRU Network. The graphic displays a stylized map of Assam showing the Brahmaputra river corridor with color-coded vulnerability hotspots: 1) Dibrugarh & Tinsukia (Upper Assam Tea Estate belts with 160+ tea gardens); 2) Barpeta & Dhubri (Lower Assam Riverine Char sandbars with 120+ island sub-centres); 3) 15 NHM Boat Clinics providing floating clinical outreach; 4) Tertiary First Referral Units and Medical Colleges (AMCH Dibrugarh, GMCH Guwahati, FAAMCH Barpeta, SMCH Silchar). Clean 2D flat vector aesthetic, royal blue, cyan, emerald green, and gold accents, crisp technical typography."
+  },
+  {
+    "diagram_id": 5,
+    "filename": "diagram_5_asha_mobile_ux.jpg",
+    "title": "Frontline Mobile Cockpit & Clinical Decision Support System (CDSS)",
+    "prompt": "A modern 16:9 widescreen user experience architectural infographic on a clean white blueprint background illustrating FRONTLINE MOBILE COCKPIT & CLINICAL DECISION SUPPORT SYSTEM (CDSS). The header features bold dark navy typography with subtitle Assamese/Bengali Localization • BLE Auto-Sync • Step-by-Step Emergency Triage Protocols. The visual presents three integrated clinical workflows: 1) Point-of-Care Screening (ABHA lookup, one-touch BLE wireless cuff reading, dipstick colorimeter camera scanner); 2) Automated CDSS Clinical Guidance (Instant MAP calculation, Low-Dose Aspirin prompt for <16 weeks gestation, oral labetalol titration, and Pritchard MgSO4 loading directives); 3) Multilingual Audio & WhatsApp Dispatcher (Assamese voice counseling note, automated family advisory, and priority 108 ambulance dispatch trigger). Clean 2D flat vector aesthetic, dark navy, cyan, emerald green, and amber diagnostic badges."
+  },
+  {
+    "diagram_id": 6,
+    "filename": "diagram_6_referral_escalation.jpg",
+    "title": "Closed-Loop Emergency Referral & 108 Mrityunjoy Escalation",
+    "prompt": "A dynamic 16:9 widescreen emergency clinical logistics infographic on a clean white and technical blueprint background illustrating CLOSED-LOOP EMERGENCY REFERRAL & 108 MRITYUNJOY ESCALATION. The header features bold dark navy typography with subtitle Automated Tele-Consult • GPS Ambulance Dispatch • Obstetric ICU Bed Reservation • Receiving Hospital Handshake. The visual layout presents a 4-stage connected emergency response timeline: Stage 1 (Red Flag Detected at Sub-Centre); Stage 2 (Tele-Consult with Medical Officer & Pritchard MgSO4 pre-referral loading); Stage 3 (GVK EMRI 108 GPS Ambulance Dispatch & live telemetry); Stage 4 (FRU Obstetric ICU Bed & Blood Bank Handshake). A bottom impact banner highlights: 45-minute transit latency compression, 82% pre-referral MgSO4 coverage, 100% zero-delay hospital ICU prep, and +28% perinatal fetal salvage. Clean 2D flat vector aesthetic, royal blue, cyan, emerald green, and coral accents."
+  },
+  {
+    "diagram_id": 7,
+    "filename": "diagram_7_enterprise_system_architecture.jpg",
+    "title": "12-Month Implementation Roadmap & Grant Budget Breakdown (₹40.00 Lakh)",
+    "prompt": "A master institutional governance and project roadmap infographic in 16:9 widescreen format on a clean white blueprint background illustrating 12-MONTH IMPLEMENTATION ROADMAP & GRANT BUDGET UTILIZATION (Rs 40.00 LAKH). The header features bold dark navy typography with subtitle Agile Phased Rollout • High-Burden Pilots • Statewide Institutionalization • NHM Handover (NESFIC-D-23 Deep Tech Track). The top section displays four milestone phases: Phase 1 (M1-M3 Clinical Co-Design with AMCH & GMCH); Phase 2 (M4-M6 High-Burden Pilot in Dibrugarh Tea Estates and Barpeta Chars); Phase 3 (M7-M9 5-District Scale & 108 CAD Linkage); Phase 4 (M10-M12 Statewide Handover to NHM Assam IT team). The bottom section features a detailed statutory budget allocation breakdown across 6 categories: Hardware Telemetry Kits (28.0%), Edge-AI & ASDC Software (26.0%), Frontline Training (17.0%), Clinical Co-Design (11.5%), Cloud & SMS Gateway (10.5%), and Cybersecurity Audit (7.0%). Clean 2D flat vector aesthetic, crisp lines, professional technical typography."
+  }
+]

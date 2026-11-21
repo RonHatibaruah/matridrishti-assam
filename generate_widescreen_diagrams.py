@@ -3,7 +3,7 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
-from matplotlib.patches import FancyBboxPatch, Rectangle, Circle, Polygon
+from matplotlib.patches import FancyBboxPatch, Rectangle, Circle, Polygon, Wedge
 import numpy as np
 
 os.environ['MPLCONFIGDIR'] = '/tmp/matplotlib-cache'
@@ -11,492 +11,649 @@ base_dir = os.path.dirname(os.path.abspath(__file__))
 out_dir = os.path.join(base_dir, 'assets', 'proposal_images')
 os.makedirs(out_dir, exist_ok=True)
 
-# Clean White Blueprint Palette
-BG_LIGHT = '#ffffff'
-GRID_LIGHT = '#f1f5f9'
-NAVY_HEADER = '#0f172a'
-NAVY_TEXT = '#0f172a'
-MUTED_TEXT = '#475569'
-EMERALD_GREEN = '#059669'
-TEAL_PRIMARY = '#0f766e'
+# High-Impact Technological Blueprint Palette (Data Centers Infographic Style)
+BG_WHITE = '#ffffff'
+GRID_COLOR = '#f1f5f9'
+NAVY_HEADER = '#0a192f'
+NAVY_CARD = '#0f172a'
+BORDER_SLATE = '#cbd5e1'
+TEXT_DARK = '#0f172a'
+TEXT_MUTED = '#475569'
+TEXT_LIGHT = '#f8fafc'
+
+# Vibrant Strategic Accents
 ROYAL_BLUE = '#1d4ed8'
 CYAN_ACCENT = '#0284c7'
+TEAL_PRIMARY = '#0f766e'
+EMERALD_GREEN = '#059669'
 AMBER_GOLD = '#d97706'
 ROSE_RED = '#dc2626'
-PURPLE_ACCENT = '#7c3aed'
+PURPLE_DEEP = '#7c3aed'
 
-def add_blueprint_grid(ax):
-    for x in np.linspace(0, 1, 33):
-        ax.axvline(x, color=GRID_LIGHT, linewidth=0.6, zorder=0)
-    for y in np.linspace(0, 1, 19):
-        ax.axhline(y, color=GRID_LIGHT, linewidth=0.6, zorder=0)
+def draw_blueprint_grid(ax):
+    """Subtle technical blueprint grid background."""
+    for x in np.linspace(0, 1, 41):
+        ax.axvline(x, color=GRID_COLOR, linewidth=0.5, zorder=0)
+    for y in np.linspace(0, 1, 23):
+        ax.axhline(y, color=GRID_COLOR, linewidth=0.5, zorder=0)
 
-def add_header(ax, title, subtitle, tag="NESFIC-D-35 TECH FRAMEWORK"):
-    banner = FancyBboxPatch((0.02, 0.895), 0.96, 0.085, boxstyle="round,pad=0.01,rounding_size=0.012",
-                            facecolor=NAVY_HEADER, edgecolor='#1e293b', linewidth=1.5, zorder=2)
+def draw_master_header(ax, title, subtitle, tag="NESFIC-D-23 TECHNOLOGICAL FRAMEWORK"):
+    """Institutional top banner with dark navy background, gold/emerald tag, and state metadata."""
+    # Main navy banner
+    banner = FancyBboxPatch((0.015, 0.895), 0.97, 0.088, boxstyle="round,pad=0.01,rounding_size=0.012",
+                            facecolor=NAVY_HEADER, edgecolor='#1e293b', linewidth=1.8, zorder=2)
     ax.add_patch(banner)
     
-    tag_bg = FancyBboxPatch((0.035, 0.92), 0.175, 0.035, boxstyle="round,pad=0.005,rounding_size=0.008",
-                            facecolor='#065f46', edgecolor=EMERALD_GREEN, linewidth=1, zorder=3)
+    # Tag badge
+    tag_bg = FancyBboxPatch((0.03, 0.922), 0.185, 0.036, boxstyle="round,pad=0.005,rounding_size=0.008",
+                            facecolor='#065f46', edgecolor='#10b981', linewidth=1.2, zorder=3)
     ax.add_patch(tag_bg)
-    ax.text(0.122, 0.937, tag, ha='center', va='center', fontsize=7.5, fontweight='bold', color='#6ee7b7', zorder=4)
+    ax.text(0.122, 0.940, tag, ha='center', va='center', fontsize=7.2, fontweight='bold', color='#6ee7b7', zorder=4)
     
-    ax.text(0.225, 0.942, title, fontsize=10.5, fontweight='bold', color='#ffffff', zorder=4)
-    ax.text(0.225, 0.914, subtitle, fontsize=8, color='#38bdf8', zorder=4)
+    # Title & Subtitle
+    ax.text(0.230, 0.944, title, fontsize=10.5, fontweight='bold', color='#ffffff', zorder=4)
+    ax.text(0.230, 0.916, subtitle, fontsize=8.0, color='#38bdf8', zorder=4)
     
-    gov_badge = FancyBboxPatch((0.77, 0.92), 0.195, 0.035, boxstyle="round,pad=0.005,rounding_size=0.008",
-                               facecolor='#1e293b', edgecolor='#334155', linewidth=1, zorder=3)
+    # Government State Badge
+    gov_badge = FancyBboxPatch((0.745, 0.922), 0.225, 0.036, boxstyle="round,pad=0.005,rounding_size=0.008",
+                               facecolor='#1e293b', edgecolor='#334155', linewidth=1.2, zorder=3)
     ax.add_patch(gov_badge)
-    ax.text(0.867, 0.937, "GOVT OF ASSAM • DEPT OF AGRICULTURE", ha='center', va='center', fontsize=7, fontweight='bold', color='#e2e8f0', zorder=4)
+    ax.text(0.857, 0.940, "GOVT OF ASSAM • HEALTH & FAMILY WELFARE & NHM", ha='center', va='center', fontsize=6.5, fontweight='bold', color='#e2e8f0', zorder=4)
 
-def save_dual(fig, basename, secondary_name=None):
+def draw_metric_pill(ax, x, y, w, h, label, val, subval, col):
+    """Draw a high-impact metric KPI counter card."""
+    card = FancyBboxPatch((x, y), w, h, boxstyle="round,pad=0.008,rounding_size=0.01",
+                          facecolor='#ffffff', edgecolor=col, linewidth=1.4, zorder=3)
+    ax.add_patch(card)
+    
+    # Top accent strip
+    top_strip = FancyBboxPatch((x, y + h - 0.008), w, 0.008, boxstyle="round,pad=0.002,rounding_size=0.004",
+                               facecolor=col, edgecolor=col, zorder=4)
+    ax.add_patch(top_strip)
+    
+    ax.text(x + w * 0.5, y + h * 0.68, val, ha='center', va='center', fontsize=9.5, fontweight='bold', color=col, zorder=5)
+    ax.text(x + w * 0.5, y + h * 0.38, label, ha='center', va='center', fontsize=6.8, fontweight='bold', color=TEXT_DARK, zorder=5)
+    ax.text(x + w * 0.5, y + h * 0.16, subval, ha='center', va='center', fontsize=6.0, color=TEXT_MUTED, zorder=5)
+
+def save_diagram_dual(fig, basename, secondary_name=None):
     plt.tight_layout()
     png_path = os.path.join(out_dir, f"{basename}.png")
     jpg_path = os.path.join(out_dir, f"{basename}.jpg")
-    plt.savefig(png_path, dpi=200, bbox_inches='tight')
-    plt.savefig(jpg_path, dpi=200, bbox_inches='tight')
+    plt.savefig(png_path, dpi=220, bbox_inches='tight')
+    plt.savefig(jpg_path, dpi=220, bbox_inches='tight')
     if secondary_name:
-        plt.savefig(os.path.join(out_dir, f"{secondary_name}.png"), dpi=200, bbox_inches='tight')
-        plt.savefig(os.path.join(out_dir, f"{secondary_name}.jpg"), dpi=200, bbox_inches='tight')
+        plt.savefig(os.path.join(out_dir, f"{secondary_name}.png"), dpi=220, bbox_inches='tight')
+        plt.savefig(os.path.join(out_dir, f"{secondary_name}.jpg"), dpi=220, bbox_inches='tight')
     plt.close()
-    print(f"Rendered {basename}.png & .jpg (16:9 Widescreen)")
+    print(f"Rendered: {basename}.png & .jpg (16:9 Widescreen)")
 
-# DIAGRAM 1: Paradigm Shift: Distress Sales vs. KrishiDrishti AI Price Intelligence
-def create_widescreen_diagram_1():
-    fig, ax = plt.subplots(figsize=(16, 9), dpi=200)
-    ax.set_facecolor(BG_LIGHT)
-    fig.patch.set_facecolor(BG_LIGHT)
+# ==============================================================================
+# DIAGRAM 1: Clinical Paradigm Shift: Reactive Crisis vs. Proactive AI Sentinel
+# ==============================================================================
+def render_diagram_1():
+    fig, ax = plt.subplots(figsize=(16, 9), dpi=220)
+    ax.set_facecolor(BG_WHITE)
+    fig.patch.set_facecolor(BG_WHITE)
     ax.axis('off')
-    add_blueprint_grid(ax)
+    draw_blueprint_grid(ax)
 
-    add_header(ax, "PARADIGM SHIFT: TRANSFORMATION FROM DISTRESS LIQUIDATION TO AI PRICE INTELLIGENCE",
-               "Department of Agriculture, Govt. of Assam • ASAMB & AAU Jorhat AMIU • NESFIC-D-35",
-               "PARADIGM SHIFT FRAMEWORK")
+    draw_master_header(ax, "CLINICAL PARADIGM SHIFT: TRANSFORMATION FROM REACTIVE CRISIS TO PROACTIVE PIH SENTINEL",
+                       "Department of Health & Family Welfare, Govt. of Assam • National Health Mission • NESFIC-D-23",
+                       "CLINICAL PARADIGM SHIFT")
 
-    metrics = [
-        ("ASSAM SMALLHOLDER BASE", "85%+ Farmers (<2 Ha)", '#0284c7'),
-        ("HARVEST PRICE VOLATILITY", "40%–60% Crash in Gluts", '#dc2626'),
-        ("FORECAST ACCURACY (MAPE)", "< 5.75% 7-Day Error", '#059669'),
-        ("FARMGATE VALUE UPLIFT", "+18% to +26% Income", '#7c3aed')
-    ]
-    for idx, (label, val, col) in enumerate(metrics):
-        x = 0.02 + idx * 0.245
-        pill = FancyBboxPatch((x, 0.835), 0.23, 0.045, boxstyle="round,pad=0.005,rounding_size=0.008",
-                              facecolor='#f8fafc', edgecolor=col, linewidth=1.2, zorder=2)
-        ax.add_patch(pill)
-        ax.text(x + 0.015, 0.862, label, fontsize=6.8, fontweight='bold', color=MUTED_TEXT, zorder=3)
-        ax.text(x + 0.015, 0.843, val, fontsize=8, fontweight='bold', color=col, zorder=3)
+    # 4 Top Metric Badges
+    draw_metric_pill(ax, 0.02, 0.825, 0.23, 0.056, "ASSAM MATERNAL MORTALITY (MMR)", "~195 per 100k", ">250 in Upper Assam Tea Belts", ROSE_RED)
+    draw_metric_pill(ax, 0.265, 0.825, 0.23, 0.056, "HDP SHARE IN MATERNAL DEATHS", "24.2% of Mortalities", "Leading preventable obstetric cause", AMBER_GOLD)
+    draw_metric_pill(ax, 0.51, 0.825, 0.23, 0.056, "EARLY DETECTION HORIZON (<20 WKS)", "+65.4% Earlier Flagging", "Hemodynamic MAP slope detection", TEAL_PRIMARY)
+    draw_metric_pill(ax, 0.755, 0.825, 0.23, 0.056, "ECLAMPSIA CRISIS REDUCTION", "-38.2% Convulsion Events", "Pritchard MgSO4 & 108 dispatch", EMERALD_GREEN)
 
-    # LEFT COLUMN: Traditional Vulnerable Farmer Workflow
-    box_left = FancyBboxPatch((0.02, 0.06), 0.47, 0.75, boxstyle="round,pad=0.015,rounding_size=0.015",
-                              facecolor='#fff1f2', edgecolor='#fda4af', linewidth=1.5, zorder=2)
-    ax.add_patch(box_left)
-    ax.text(0.255, 0.785, "CURRENT AGRI-MARKET REALITY (ASYMMETRIC & REACTIVE)", ha='center', fontsize=10.5, fontweight='bold', color='#9f1239', zorder=3)
-    ax.text(0.255, 0.760, "Severe Middleman Exploitation, Post-Harvest Gluts & Distress Sales Below Production Cost", ha='center', fontsize=7.5, color='#881337', zorder=3)
+    # LEFT COLUMN: Reactive Crisis Field Reality
+    left_card = FancyBboxPatch((0.02, 0.04), 0.47, 0.765, boxstyle="round,pad=0.015,rounding_size=0.015",
+                               facecolor='#fff1f2', edgecolor='#fda4af', linewidth=1.5, zorder=2)
+    ax.add_patch(left_card)
+    
+    # Left Header Strip
+    left_strip = FancyBboxPatch((0.035, 0.745), 0.44, 0.045, boxstyle="round,pad=0.006,rounding_size=0.008",
+                                facecolor='#9f1239', edgecolor='#9f1239', zorder=3)
+    ax.add_patch(left_strip)
+    ax.text(0.255, 0.767, "CONVENTIONAL FIELD REALITY: FRAGMENTED & REACTIVE", ha='center', va='center', fontsize=8.5, fontweight='bold', color='#ffffff', zorder=4)
 
     left_steps = [
-        ("1. Information Blackout at Village Assemblies", "Smallholders at local weekly hats have zero visibility into regional mandi wholesale prices, accepting predatory buyer bids.", '#be123c'),
-        ("2. Peak Harvest Gluts & Price Collapse", "Synchronized harvesting causes severe localized over-supply; perishable vegetables and paddy crash up to 60% below MSP.", '#9f1239'),
-        ("3. Sub-Optimal Local Selling vs. High Freight", "Farmers lack logistics calculations to determine if transporting produce 80 km to urban mandis (e.g. Guwahati) yields net profit.", '#be123c'),
-        ("4. Urgent Cash Needs & Informal Debt Traps", "Without certified warehouse receipt financing, farmers cannot store crops and borrow from informal lenders at 36% annual interest.", '#9f1239')
+        ("1. Uncalibrated Cuffs & Severe Digit Bias",
+         "Frontline ASHA workers use aging mercury or aneroid meters with frequent terminal digit rounding (e.g. recording 120/80 mmHg despite true reading 138/88 mmHg), masking early diastolic escalation.",
+         ROSE_RED),
+        ("2. Isolated Single-Visit Cutoffs (>= 140/90 mmHg)",
+         "Cross-sectional checkups fail to measure longitudinal Mean Arterial Pressure (MAP) velocity. Early vascular resistance is completely missed during the critical 12 to 16 week booking period.",
+         '#be123c'),
+        ("3. Missed Aspirin Prophylaxis Window (< 16 Weeks)",
+         "Without early risk stratification, high-risk expectant mothers miss the proven therapeutic window for Low-Dose Aspirin (75-150 mg OD) and dietary calcium, allowing placental ischemia to progress.",
+         ROSE_RED),
+        ("4. Late-Stage Eclampsia Convulsions & Uncoordinated 108 Transit",
+         "Pre-eclampsia is recognized only when neurological agony or seizures erupt at home. Emergency 108 transit is delayed without pre-referral MgSO4 loading or hospital bed reservation.",
+         '#9f1239')
     ]
-    for i, (head, desc, col) in enumerate(left_steps):
-        y = 0.63 - i * 0.165
-        c = FancyBboxPatch((0.04, y), 0.43, 0.145, boxstyle="round,pad=0.01,rounding_size=0.01",
+    for i, (title, desc, col) in enumerate(left_steps):
+        y = 0.585 - i * 0.175
+        c = FancyBboxPatch((0.035, y), 0.44, 0.150, boxstyle="round,pad=0.008,rounding_size=0.01",
                            facecolor='#ffffff', edgecolor='#fecdd3', linewidth=1.2, zorder=3)
         ax.add_patch(c)
-        ax.text(0.055, y + 0.11, head, fontsize=8.5, fontweight='bold', color=col, zorder=4)
-        ax.text(0.055, y + 0.02, desc, fontsize=7.2, color=MUTED_TEXT, zorder=4, wrap=True)
+        
+        # Indicator badge
+        ind = Circle((0.055, y + 0.118), 0.010, facecolor=col, edgecolor='#ffffff', linewidth=1, zorder=4)
+        ax.add_patch(ind)
+        ax.text(0.055, y + 0.118, str(i + 1), ha='center', va='center', fontsize=6.5, fontweight='bold', color='#ffffff', zorder=5)
+        
+        ax.text(0.075, y + 0.118, title, fontsize=7.8, fontweight='bold', color=col, zorder=4)
+        ax.text(0.050, y + 0.020, desc, fontsize=6.8, color=TEXT_MUTED, zorder=4, wrap=True)
 
-    # RIGHT COLUMN: KrishiDrishti AI Framework
-    box_right = FancyBboxPatch((0.51, 0.06), 0.47, 0.75, boxstyle="round,pad=0.015,rounding_size=0.015",
-                               facecolor='#f0fdf4', edgecolor='#86efac', linewidth=1.5, zorder=2)
-    ax.add_patch(box_right)
-    ax.text(0.745, 0.785, "KRISHIDRISHTI AI ECOSYSTEM (PREDICTIVE & EMPOWERING)", ha='center', fontsize=10.5, fontweight='bold', color='#166534', zorder=3)
-    ax.text(0.745, 0.760, "Multi-Horizon Deep Learning, Spatial Arbitrage Logistics & WhatsApp Delivery in Assamese", ha='center', fontsize=7.5, color='#14532d', zorder=3)
+    # RIGHT COLUMN: MatriDrishti AI Ecosystem
+    right_card = FancyBboxPatch((0.51, 0.04), 0.47, 0.765, boxstyle="round,pad=0.015,rounding_size=0.015",
+                                facecolor='#f0fdf4', edgecolor='#86efac', linewidth=1.5, zorder=2)
+    ax.add_patch(right_card)
+    
+    # Right Header Strip
+    right_strip = FancyBboxPatch((0.525, 0.745), 0.44, 0.045, boxstyle="round,pad=0.006,rounding_size=0.008",
+                                 facecolor='#166534', edgecolor='#166534', zorder=3)
+    ax.add_patch(right_strip)
+    ax.text(0.745, 0.767, "MATRIDRISHTI AI ECOSYSTEM: PROACTIVE & CLOSED-LOOP", ha='center', va='center', fontsize=8.5, fontweight='bold', color='#ffffff', zorder=4)
 
     right_steps = [
-        ("1. Multi-Stream Mandi & Satellite Ingestion", "Continuous ETL ingestion of Agmarknet, e-NAM, ASAMB mandi records, IMD weather stations, and Sentinel-2 crop vegetation indices.", '#15803d'),
-        ("2. Temporal Fusion Transformer (TFT) Core", "Multi-horizon sequence neural networks predict 7-day, 30-day, and 90-day wholesale price trajectories with 90% confidence bounds.", '#047857'),
-        ("3. Dynamic 'Hold vs. Sell vs. Route' Sandbox", "Computes Net Realizable Value (NRV) factoring freight distance, mandi cess, and perishability shrinkage to maximize farmer profits.", '#15803d'),
-        ("4. Zero-Friction Multilingual WhatsApp Delivery", "Automated bilingual alerts in Assamese (অসমীয়া) and English via WhatsApp, SMS, and IVRS directly connect farmers with e-NWR credit.", '#047857')
+        ("1. Certified BLE Wireless Auto-Capture & Optical OCR",
+         "CDSCO-approved digital cuffs automatically stream SBP, DBP, and pulse via Bluetooth Low Energy GATT service. Zero human rounding, zero data falsification, with on-device camera OCR fallback.",
+         EMERALD_GREEN),
+        ("2. Longitudinal MAP Velocity Engine (Delta MAP / Delta t)",
+         "Deep sequence model calculates Mean Arterial Pressure MAP = (2*DBP + SBP)/3 at every visit, flagging abnormal vascular resistance trajectories (> 1.25 mmHg/week) weeks before overt hypertension.",
+         TEAL_PRIMARY),
+        ("3. Automated Frontline Clinical Decision Support (CDSS)",
+         "Prompts ANMs to initiate Low-Dose Aspirin (75-150 mg OD) before 16 weeks, tracks dietary calcium adherence, and triggers oral labetalol titration under PHC Medical Officer tele-supervision.",
+         EMERALD_GREEN),
+        ("4. Automated 108 Emergency Dispatch & FRU Bed Escalation",
+         "Critical pre-eclampsia automatically triggers priority GPS routing for 108 Mrityunjoy ambulances, enforces Pritchard MgSO4 pre-referral loading, and pre-reserves FRU obstetric ICU beds.",
+         TEAL_PRIMARY)
     ]
-    for i, (head, desc, col) in enumerate(right_steps):
-        y = 0.63 - i * 0.165
-        c = FancyBboxPatch((0.53, y), 0.43, 0.145, boxstyle="round,pad=0.01,rounding_size=0.01",
+    for i, (title, desc, col) in enumerate(right_steps):
+        y = 0.585 - i * 0.175
+        c = FancyBboxPatch((0.525, y), 0.44, 0.150, boxstyle="round,pad=0.008,rounding_size=0.01",
                            facecolor='#ffffff', edgecolor='#bbf7d0', linewidth=1.2, zorder=3)
         ax.add_patch(c)
-        ax.text(0.545, y + 0.11, head, fontsize=8.5, fontweight='bold', color=col, zorder=4)
-        ax.text(0.545, y + 0.02, desc, fontsize=7.2, color=MUTED_TEXT, zorder=4, wrap=True)
+        
+        # Indicator badge
+        ind = Circle((0.545, y + 0.118), 0.010, facecolor=col, edgecolor='#ffffff', linewidth=1, zorder=4)
+        ax.add_patch(ind)
+        ax.text(0.545, y + 0.118, str(i + 1), ha='center', va='center', fontsize=6.5, fontweight='bold', color='#ffffff', zorder=5)
+        
+        ax.text(0.565, y + 0.118, title, fontsize=7.8, fontweight='bold', color=col, zorder=4)
+        ax.text(0.540, y + 0.020, desc, fontsize=6.8, color=TEXT_MUTED, zorder=4, wrap=True)
 
-    save_dual(fig, "diagram_1_before_after_workflow")
+    save_diagram_dual(fig, "diagram_1_before_after_workflow")
 
-# DIAGRAM 2: End-to-End Enterprise System Architecture
-def create_widescreen_diagram_2():
-    fig, ax = plt.subplots(figsize=(16, 9), dpi=200)
-    ax.set_facecolor(BG_LIGHT)
-    fig.patch.set_facecolor(BG_LIGHT)
+# ==============================================================================
+# DIAGRAM 2: System Architecture: Frontline BLE to ASDC Clinical Cloud
+# ==============================================================================
+def render_diagram_2():
+    fig, ax = plt.subplots(figsize=(16, 9), dpi=220)
+    ax.set_facecolor(BG_WHITE)
+    fig.patch.set_facecolor(BG_WHITE)
     ax.axis('off')
-    add_blueprint_grid(ax)
+    draw_blueprint_grid(ax)
 
-    add_header(ax, "KRISHIDRISHTI PLATFORM: END-TO-END SYSTEM ARCHITECTURE & ASDC BLUEPRINT",
-               "Enterprise AI GovTech Stack Deployed within Assam State Data Centre • DPDP Act 2023 Compliant",
-               "SYSTEM ARCHITECTURE BLUEPRINT")
+    draw_master_header(ax, "ENTERPRISE SYSTEM ARCHITECTURE: FRONTLINE IOT TO ASDC CLINICAL CLOUD",
+                       "Ayushman Bharat Digital Mission (ABDM) Compliant • Offline-First Edge Sync • TimescaleDB Vitals Vault",
+                       "SYSTEM ARCHITECTURE BLUEPRINT")
 
-    tiers = [
-        ("1. EXTERNAL TELEMETRY & MULTI-STREAM INGESTION LAYER", 0.77, '#0284c7', [
-            ("Agmarknet & e-NAM Mandis (Daily Prices & Volume Arrivals)", 0.04),
-            ("ASAMB 65+ Regulated Mandis & Rural Weekly Haat Surveys", 0.28),
-            ("IMD Automatic Weather Stations (Rainfall & Temperature)", 0.52),
-            ("Copernicus Sentinel-2 NDVI 10m Imagery (Crop Phenology)", 0.76)
-        ]),
-        ("2. ASDC INGESTION, FEATURE STORE & POSTGIS SPATIAL DATABASE", 0.54, '#059669', [
-            ("Apache Kafka Telemetry Queue & Ingestion Microservices", 0.04),
-            ("PostgreSQL 16 + PostGIS 3.4 Spatial Mandi Database", 0.28),
-            ("Feast Feature Store (Lagged Prices, Arrival Shock Signals)", 0.52),
-            ("Redis 7.2 In-Memory Price Cache & Cluster Stream Router", 0.76)
-        ]),
-        ("3. CORE AI PREDICTION & FARMER DECISION ENGINE (PYTORCH)", 0.31, '#7c3aed', [
-            ("Temporal Fusion Transformer (TFT) Multi-Horizon Predictor", 0.04),
-            ("Quantile Regression Engine (P10 Downside, P50 Median, P90)", 0.28),
-            ("Spatial Mandi Arbitrage & Net Realizable Value (NRV) Calc", 0.52),
-            ("Cold Storage Preservation & e-NWR Collateral Optimizer", 0.76)
-        ]),
-        ("4. MULTILINGUAL DISSEMINATION & GOVERNANCE COCKPITS", 0.08, '#d97706', [
-            ("Meta WhatsApp Business API Bot in Assamese (অসমীয়া) & English", 0.04),
-            ("C-DAC Mobile SMS & Interactive Voice Response (IVRS) Gateway", 0.28),
-            ("Statewide WebGIS Executive Dashboard (Directorate of Agri)", 0.52),
-            ("FPO Bulk Consolidation Hub & SHA-256 Tamper-Proof Audit Log", 0.76)
-        ])
+    layers = [
+        ("LAYER 1: FRONTLINE TELEMETRY LAYER",
+         "Ayushman Arogya Mandirs, Tea Estates & Riverine Chars",
+         CYAN_ACCENT,
+         [
+             ("Validated BLE Digital BP Cuff", "CDSCO-approved IEEE 11073-10407 GATT service auto-streaming SBP, DBP, Pulse."),
+             ("Optical Computer Vision OCR", "On-device MobileNetV3 model capturing digits from legacy/analog sphygmomanometers."),
+             ("Dipstick Proteinuria Scanner", "Colorimetric computer vision classifying urinalysis protein pads (Nil, Trace, 1+ to 4+)."),
+             ("ABHA M1 Milestone Engine", "Instant Ayushman Bharat Health Account creation via Aadhaar/mobile OTP in Assamese.")
+         ]),
+        ("LAYER 2: OFFLINE-FIRST MOBILE EDGE",
+         "React Native + WatermelonDB Reactive SQLite Core",
+         TEAL_PRIMARY,
+         [
+             ("Zero-Latency Offline CRUD", "Full functionality during cellular blackouts across Brahmaputra riverine chars."),
+             ("Encrypted Local Vault (AES-256)", "Secure local queue staging longitudinal ANC vitals and risk scores."),
+             ("Bi-Directional CRDT Sync", "Automatic conflict-free replication with ASDC cloud upon 2G/4G connectivity."),
+             ("Multilingual Audio Prompts", "Voice prompts in Assamese, Bengali, and Bodo for rural mothers.")
+         ]),
+        ("LAYER 3: ASDC CLINICAL AI CORE",
+         "Assam State Data Centre Sovereign Microservices",
+         PURPLE_DEEP,
+         [
+             ("Longitudinal MAP ML Engine", "XGBoost model predicting pre-eclampsia risk with 94.2% sensitivity."),
+             ("Clinical CDSS Rule Engine", "Automated GoI/WHO protocol engine (Aspirin <16w, Labetalol, Pritchard MgSO4)."),
+             ("TimescaleDB Vitals Vault", "High-frequency time-series database indexing maternal hemodynamic trajectories."),
+             ("PostGIS Geospatial Engine", "Catchment buffers, boat clinic routes, and terrain travel matrices.")
+         ]),
+        ("LAYER 4: CLOSED-LOOP REFERRAL & GOV",
+         "Emergency Dispatch & State Health Leadership",
+         ROSE_RED,
+         [
+             ("108 Mrityunjoy Dispatch API", "Priority ambulance routing with rural GPS coordinates sent to vehicle MDT."),
+             ("FRU Obstetric ICU Bed Link", "Pre-arrival hospital bed reservation, blood bank alert, and neonatal SNCU prep."),
+             ("WhatsApp / SMS Advisory Bus", "Automated danger-sign alerts dispatched to pregnant women and family members."),
+             ("NHM State Command Dashboard", "Live monitoring of High-Risk Pregnancy registries and tea estate health units.")
+         ])
     ]
 
-    for title, y_base, col, items in tiers:
-        hdr = FancyBboxPatch((0.02, y_base + 0.155), 0.96, 0.035, boxstyle="round,pad=0.005,rounding_size=0.006",
-                             facecolor=col, edgecolor=col, linewidth=1, zorder=2)
-        ax.add_patch(hdr)
-        ax.text(0.035, y_base + 0.172, title, fontsize=8.5, fontweight='bold', color='#ffffff', zorder=3)
+    for idx, (title, sub, col, items) in enumerate(layers):
+        x = 0.02 + idx * 0.245
+        
+        # Header banner for each column
+        head = FancyBboxPatch((x, 0.765), 0.23, 0.082, boxstyle="round,pad=0.008,rounding_size=0.01",
+                              facecolor=col, edgecolor=col, zorder=2)
+        ax.add_patch(head)
+        ax.text(x + 0.115, 0.816, title, ha='center', va='center', fontsize=7.2, fontweight='bold', color='#ffffff', zorder=3)
+        ax.text(x + 0.115, 0.785, sub, ha='center', va='center', fontsize=6.0, color='#e0f2fe', zorder=3)
 
-        cont = FancyBboxPatch((0.02, y_base), 0.96, 0.15, boxstyle="round,pad=0.01,rounding_size=0.01",
+        # Body card container
+        body = FancyBboxPatch((x, 0.04), 0.23, 0.710, boxstyle="round,pad=0.01,rounding_size=0.01",
                               facecolor='#f8fafc', edgecolor='#cbd5e1', linewidth=1.2, zorder=1)
-        ax.add_patch(cont)
+        ax.add_patch(body)
 
-        for text, x in items:
-            c = FancyBboxPatch((x, y_base + 0.02), 0.20, 0.11, boxstyle="round,pad=0.008,rounding_size=0.008",
-                               facecolor='#ffffff', edgecolor='#94a3b8', linewidth=1, zorder=2)
-            ax.add_patch(c)
-            ax.text(x + 0.015, y_base + 0.075, text, fontsize=7.2, fontweight='bold', color=NAVY_TEXT, zorder=3, wrap=True)
+        for i, (head_text, desc_text) in enumerate(items):
+            y = 0.575 - i * 0.170
+            box = FancyBboxPatch((x + 0.012, y), 0.206, 0.150, boxstyle="round,pad=0.008,rounding_size=0.008",
+                                 facecolor='#ffffff', edgecolor='#e2e8f0', linewidth=1.1, zorder=2)
+            ax.add_patch(box)
+            
+            # Module header
+            ax.text(x + 0.022, y + 0.115, head_text, fontsize=7.2, fontweight='bold', color=TEXT_DARK, zorder=3)
+            ax.text(x + 0.022, y + 0.018, desc_text, fontsize=6.4, color=TEXT_MUTED, zorder=3, wrap=True)
 
-    save_dual(fig, "diagram_2_cadastral_reconciliation_flow", "diagram_2_enterprise_system_architecture")
+    save_diagram_dual(fig, "diagram_2_system_architecture", "diagram_2_cadastral_reconciliation_flow")
 
-# DIAGRAM 3: Multi-Horizon Temporal Fusion Transformer (TFT) Architecture
-def create_widescreen_diagram_3():
-    fig, ax = plt.subplots(figsize=(16, 9), dpi=200)
-    ax.set_facecolor(BG_LIGHT)
-    fig.patch.set_facecolor(BG_LIGHT)
+# ==============================================================================
+# DIAGRAM 3: AI Hypertensive Risk Stratification & MAP Trajectory
+# ==============================================================================
+def render_diagram_3():
+    fig, ax = plt.subplots(figsize=(16, 9), dpi=220)
+    ax.set_facecolor(BG_WHITE)
+    fig.patch.set_facecolor(BG_WHITE)
     ax.axis('off')
-    add_blueprint_grid(ax)
+    draw_blueprint_grid(ax)
 
-    add_header(ax, "TEMPORAL FUSION TRANSFORMER (TFT) & QUANTILE UNCERTAINTY ARCHITECTURE",
-               "Interpretable Multi-Horizon Deep Learning Model for Complex Agri-Commodity Volatility",
-               "AI/ML MODEL ARCHITECTURE")
+    draw_master_header(ax, "HEMODYNAMIC TRAJECTORY & AI RISK PREDICTION: MEAN ARTERIAL PRESSURE (MAP)",
+                       "Mathematical Formulations • Longitudinal Velocity (Delta MAP / Delta t) • Multi-Factor XGBoost Model",
+                       "AI RISK ENGINE & MATHEMATICS")
 
-    tiers = [
-        ("STATIC COVARIATES & MANDI METADATA", 0.04, '#06b6d4', '#e0f2fe', '#0369a1', [
-            ("Mandi Location & Class", "District geo-coordinates, APMC regulated vs. rural haat status, terminal market status."),
-            ("Crop Perishability Tier", "Highly perishable (tomato, cabbage) vs. semi-perishable (potato) vs. durable (paddy, mustard)."),
-            ("Storage Infrastructure", "Distance to nearest cold storage or WDRA warehouse, licensed capacity index."),
-            ("Role in Model", "Static Variable Selection Network (VSN) conditions temporal sequence encoders.")
-        ]),
-        ("DYNAMIC EXOGENOUS & TEMPORAL INPUTS", 0.36, '#f59e0b', '#fef3c7', '#b45309', [
-            ("Observed Time Series", "Daily modal prices (t-30 to t), daily arrival volume, diesel fuel wholesale indices."),
-            ("Known Future Features", "Bihu/Puja festival calendars, harvest calendar cycles, scheduled statutory MSP revisions."),
-            ("Agro-Climatic Signals", "IMD cumulative rainfall anomalies, heatwave alerts, Brahmaputra flood warnings."),
-            ("Earth Observation", "Copernicus Sentinel-2 district NDVI greenness index reflecting localized harvest timing.")
-        ]),
-        ("MULTI-HORIZON QUANTILE OUTPUTS", 0.68, '#a855f7', '#f3e8ff', '#6b21a8', [
-            ("Quantile Floor (P10)", "Conservative worst-case price floor with 90% statistical safety margin for risk-averse farmers."),
-            ("Median Forecast (P50)", "Most probable wholesale modal clearing rate across 7-day, 30-day, and 90-day horizons."),
-            ("Upside Ceiling (P90)", "Projected price peak under localized harvest scarcity or export procurement demand."),
-            ("Actionable Advisory", "Directly drives automated 'HOLD vs. SELL' recommendations with clear confidence bounds.")
-        ])
+    # LEFT COLUMN: Mathematical Formulations
+    left_card = FancyBboxPatch((0.02, 0.04), 0.46, 0.81, boxstyle="round,pad=0.015,rounding_size=0.015",
+                               facecolor='#f8fafc', edgecolor='#cbd5e1', linewidth=1.5, zorder=2)
+    ax.add_patch(left_card)
+    ax.text(0.04, 0.815, "MATHEMATICAL FORMULATIONS & PHYSIOLOGICAL PATHWAY", fontsize=9.0, fontweight='bold', color=TEXT_DARK, zorder=3)
+
+    formulas = [
+        ("1. Mean Arterial Pressure (MAP) Perfusion Formula",
+         "MAP = DBP + 1/3*(SBP - DBP) = (2*DBP + SBP) / 3",
+         "Represents the true continuous perfusion pressure across maternal vascular beds. Significantly superior early sensitivity compared to isolated systolic or diastolic thresholds."),
+        ("2. Longitudinal Trajectory Velocity Formula",
+         "Velocity_MAP = (MAP_t2 - MAP_t1) / (Gestational_Weeks_t2 - Gestational_Weeks_t1)",
+         "Captures the clinical failure of the physiological mid-trimester vascular resistance drop (weeks 16-22). Escalation > 1.25 mmHg/week indicates high pre-eclampsia risk."),
+        ("3. Asymmetric Clinical Loss Function",
+         "Loss = -1/N * Sum[ w_crit * y * log(p) + (1-y) * log(1-p) ]",
+         "Weight w_crit = 4.5 heavily penalizes missed high-risk pre-eclampsia cases, achieving an empirical screening sensitivity of 94.2% while keeping false alarms < 10.4%."),
+        ("4. Explainable Clinical Ensemble Decision Rule",
+         "Risk_Score = Ensemble(XGBoost_P, MAP_Velocity, Proteinuria, BMI, Parity, TeaEstate)",
+         "Fuses deep sequence tree probabilities with deterministic GoI/WHO clinical triggers, delivering transparent SHAP diagnostic attribution to attending Medical Officers.")
     ]
-
-    for title, x, border_col, bg_col, text_col, facts in tiers:
-        box = FancyBboxPatch((x, 0.08), 0.28, 0.74, boxstyle="round,pad=0.015,rounding_size=0.015",
-                             facecolor=bg_col, edgecolor=border_col, linewidth=2, zorder=2)
-        ax.add_patch(box)
-
-        t_bg = FancyBboxPatch((x + 0.015, 0.74), 0.25, 0.055, boxstyle="round,pad=0.005,rounding_size=0.008",
-                              facecolor=border_col, edgecolor=border_col, linewidth=1, zorder=3)
-        ax.add_patch(t_bg)
-        ax.text(x + 0.14, 0.767, title, ha='center', va='center', fontsize=8.5, fontweight='bold', color='#ffffff', zorder=4)
-
-        for i, (label, desc) in enumerate(facts):
-            y = 0.58 - i * 0.155
-            card = FancyBboxPatch((x + 0.015, y), 0.25, 0.13, boxstyle="round,pad=0.008,rounding_size=0.008",
-                                  facecolor='#ffffff', edgecolor='#cbd5e1', linewidth=1, zorder=3)
-            ax.add_patch(card)
-            ax.text(x + 0.025, y + 0.10, label, fontsize=7.5, fontweight='bold', color=text_col, zorder=4)
-            ax.text(x + 0.025, y + 0.02, desc, fontsize=6.8, color=MUTED_TEXT, zorder=4, wrap=True)
-
-    save_dual(fig, "diagram_3_cadastral_anomaly_catalog", "diagram_3_ml_forecasting_pipeline")
-
-# DIAGRAM 4: Spatial Mandi Arbitrage & Net Realizable Value Engine
-def create_widescreen_diagram_4():
-    fig, ax = plt.subplots(figsize=(16, 9), dpi=200)
-    ax.set_facecolor(BG_LIGHT)
-    fig.patch.set_facecolor(BG_LIGHT)
-    ax.axis('off')
-    add_blueprint_grid(ax)
-
-    add_header(ax, "SPATIAL MANDI ARBITRAGE & NET REALIZABLE VALUE (NRV) LOGISTICS ENGINE",
-               "Inter-Mandi Price Difference Optimization Factoring Road Freight, Shrinkage & Mandi Fees",
-               "MANDI ARBITRAGE ENGINE")
-
-    # Formula Box
-    f_box = FancyBboxPatch((0.02, 0.72), 0.96, 0.14, boxstyle="round,pad=0.01,rounding_size=0.01",
-                           facecolor='#0f172a', edgecolor='#334155', linewidth=1.5, zorder=2)
-    ax.add_patch(f_box)
-    ax.text(0.5, 0.81, "NET REALIZABLE VALUE (NRV) ARBITRAGE FORMULATION", ha='center', fontsize=10, fontweight='bold', color='#38bdf8', zorder=3)
-    ax.text(0.5, 0.75, "NRV(M_dest) = P_expected * (1 - δ_shrink * Δt) - [C_base + C_km * D + Toll] / Q - μ_cess * P_expected - C_handling",
-            ha='center', fontsize=9, fontfamily='monospace', fontweight='bold', color='#ffffff', zorder=3)
-
-    factors = [
-        ("1. DESTINATION PRICE P_dest", "Forecasted wholesale rate at target terminal consumption mandi on arrival day.", '#0284c7'),
-        ("2. TRANSIT SHRINKAGE δ_shrink", "Empirical weight loss per transit hour (0.15%/hr for greens, 0.05% tomatoes, 0.0% grains).", '#dc2626'),
-        ("3. FREIGHT LOGISTICS C_km", "Distance-weighted freight rate per quintal for mini-trucks (Tata Ace) to 10-tonne carriers.", '#d97706'),
-        ("4. APMC MANDI CESS μ_cess", "Statutory market committee user fee (typically 1.0% to 1.5% in Assam mandis).", '#7c3aed'),
-        ("5. MINIMUM GAIN THRESHOLD", "Configurable risk premium (+₹50–₹100/q) required to recommend inter-mandi transport.", '#059669')
-    ]
-
-    for idx, (head, desc, col) in enumerate(factors):
-        x = 0.02 + idx * 0.195
-        card = FancyBboxPatch((x, 0.38), 0.18, 0.31, boxstyle="round,pad=0.01,rounding_size=0.01",
-                              facecolor='#ffffff', edgecolor=col, linewidth=1.5, zorder=2)
-        ax.add_patch(card)
-        ax.text(x + 0.015, 0.64, head, fontsize=7.2, fontweight='bold', color=col, zorder=3, wrap=True)
-        ax.text(x + 0.015, 0.42, desc, fontsize=6.8, color=MUTED_TEXT, zorder=3, wrap=True)
-
-    # Real World Example Case Study Below
-    sm_box = FancyBboxPatch((0.02, 0.06), 0.96, 0.28, boxstyle="round,pad=0.01,rounding_size=0.01",
-                            facecolor='#f8fafc', edgecolor='#cbd5e1', linewidth=1.2, zorder=2)
-    ax.add_patch(sm_box)
-    ax.text(0.04, 0.30, "VALIDATED CASE SCENARIO: KHARUPETIA TOMATO HARVEST DISPATCH", fontsize=9, fontweight='bold', color=NAVY_TEXT, zorder=3)
-
-    routes = [
-        ("LOCAL SALE AT KHARUPETIA (DARRANG)", "Wholesale Price: ₹600/q • Transit Cost: ₹0 • Shrinkage: 0% • NET PROCEEDS: ₹600/q (DISTRESS LOSS)", '#ef4444', 0.04),
-        ("ROUTE TO GUWAHATI PAMOHI (85 KM)", "Wholesale Price: ₹1,450/q • Transit: ₹180/q • Shrink: ₹15/q • NET NRV: ₹1,215/q (+₹615/q NET PROFIT)", '#10b981', 0.36),
-        ("ROUTE TO SILCHAR BARAK VALLEY (340 KM)", "Wholesale Price: ₹1,850/q • Transit: ₹520/q • Shrink: ₹90/q • NET NRV: ₹1,195/q (+₹595/q NET PROFIT)", '#0284c7', 0.68)
-    ]
-    for head, desc, col, x in routes:
-        c = FancyBboxPatch((x, 0.09), 0.28, 0.18, boxstyle="round,pad=0.008,rounding_size=0.008",
-                           facecolor='#ffffff', edgecolor=col, linewidth=1.2, zorder=3)
+    for i, (head_t, math_t, exp_t) in enumerate(formulas):
+        y = 0.635 - i * 0.190
+        c = FancyBboxPatch((0.035, y), 0.43, 0.170, boxstyle="round,pad=0.008,rounding_size=0.008",
+                           facecolor='#ffffff', edgecolor='#e2e8f0', linewidth=1.2, zorder=3)
         ax.add_patch(c)
-        ax.text(x + 0.015, 0.22, head, fontsize=7.5, fontweight='bold', color=col, zorder=4)
-        ax.text(x + 0.015, 0.12, desc, fontsize=6.8, color=MUTED_TEXT, zorder=4, wrap=True)
+        ax.text(0.05, y + 0.135, head_t, fontsize=7.8, fontweight='bold', color=TEAL_PRIMARY, zorder=4)
+        
+        # Formula box
+        f_box = FancyBboxPatch((0.045, y + 0.075), 0.41, 0.048, boxstyle="round,pad=0.004,rounding_size=0.006",
+                               facecolor='#f0f9ff', edgecolor='#bae6fd', zorder=4)
+        ax.add_patch(f_box)
+        ax.text(0.055, y + 0.098, math_t, fontsize=7.5, fontweight='bold', color='#0369a1', fontfamily='monospace', zorder=5)
+        ax.text(0.05, y + 0.015, exp_t, fontsize=6.6, color=TEXT_MUTED, zorder=4, wrap=True)
 
-    save_dual(fig, "diagram_4_blockchain_land_registry", "diagram_4_spatial_mandi_arbitrage")
+    # RIGHT COLUMN: Trajectory Graph & Triage Cards
+    right_card = FancyBboxPatch((0.50, 0.04), 0.48, 0.81, boxstyle="round,pad=0.015,rounding_size=0.015",
+                                facecolor='#f0fdf4', edgecolor='#86efac', linewidth=1.5, zorder=2)
+    ax.add_patch(right_card)
+    ax.text(0.52, 0.815, "GESTATIONAL MAP TRAJECTORIES & THREE-TIER TRIAGE MATRIX", fontsize=9.0, fontweight='bold', color='#166534', zorder=3)
 
-# DIAGRAM 5: Multilingual Farmer Advisory Engine & Mobile/WhatsApp Interface
-def create_widescreen_diagram_5():
-    fig, ax = plt.subplots(figsize=(16, 9), dpi=200)
-    ax.set_facecolor(BG_LIGHT)
-    fig.patch.set_facecolor(BG_LIGHT)
-    ax.axis('off')
-    add_blueprint_grid(ax)
+    # Subplot for actual curves
+    sub_ax = fig.add_axes([0.53, 0.38, 0.42, 0.40])
+    sub_ax.set_facecolor('#ffffff')
+    weeks = np.linspace(10, 38, 100)
+    normal_curve = 81 - 4.5 * np.sin((weeks - 10) / 14 * np.pi) + 0.15 * (weeks - 10)
+    pih_curve = 83 + 0.48 * (weeks - 10)
+    severe_curve = 85 + 0.98 * (weeks - 10)
 
-    add_header(ax, "MULTILINGUAL FARMER ADVISORY ENGINE & WHATSAPP ZERO-FRICTION INTERFACE",
-               "Automated Natural Language Advisories in Assamese and English via WhatsApp & IVRS",
-               "FARMER INTERFACE BLUEPRINT")
+    sub_ax.plot(weeks, normal_curve, color=EMERALD_GREEN, linewidth=2.5, label='Normal Pregnancy (Mid-Trimester Dip)')
+    sub_ax.plot(weeks, pih_curve, color=AMBER_GOLD, linewidth=2.5, linestyle='--', label='Moderate PIH (Gestational Htn)')
+    sub_ax.plot(weeks, severe_curve, color=ROSE_RED, linewidth=2.5, label='Severe Pre-Eclampsia (Impending Eclampsia)')
 
-    # Left Container: WhatsApp Conversational Flow
-    wa_box = FancyBboxPatch((0.02, 0.06), 0.47, 0.81, boxstyle="round,pad=0.015,rounding_size=0.015",
-                            facecolor='#f0fdf4', edgecolor='#86efac', linewidth=1.5, zorder=2)
-    ax.add_patch(wa_box)
-    ax.text(0.255, 0.84, "OFFICIAL WHATSAPP BUSINESS BOT (ASSAMESE / ENGLISH)", ha='center', fontsize=10, fontweight='bold', color='#166534', zorder=3)
+    sub_ax.axhline(85, color='#94a3b8', linestyle=':', label='MAP 85 mmHg (Prophylaxis Floor)')
+    sub_ax.axhline(96, color=ROSE_RED, linestyle=':', label='MAP 96 mmHg (Critical Red Threshold)')
+    sub_ax.axvspan(12, 16, color='#38bdf8', alpha=0.18, label='Critical Window: Aspirin Prophylaxis (<16w)')
 
-    wa_messages = [
-        ("Farmer (Assamese Voice/Text)", "\"Moi Darrang-ot 50q sarisoh ketiya bikri korim?\"\n(I have 50q mustard in Darrang. Should I sell now or hold?)", '#1e293b', '#ffffff', 0.69),
-        ("KrishiDrishti AI Bot (Assamese / English)", "Namaskar Pranab Baruah! Kharupetia current rate: Rs 5,850/q.\nAI 12-Day Forecast: Rs 6,200/q (+Rs 350/q surge).\nAdvisory: HOLD produce! After warehouse rent (Rs 90), net gain is +Rs 260/q.", '#047857', '#dcfce7', 0.50),
-        ("Farmer (One-Tap Action)", "[1] View Nearest Cold Storage   [2] Compare Guwahati Pamohi Price", '#1e293b', '#ffffff', 0.38),
-        ("KrishiDrishti AI Bot (Logistics & Credit)", "Kharupetia Cold Store: 60% capacity vacant. Under e-NWR, you qualify for 75% instant collateral credit (Rs 2.18 Lakh) at 7% p.a. interest.", '#047857', '#dcfce7', 0.17)
+    sub_ax.set_xlabel('Gestational Age (Weeks)', fontsize=7.2, fontweight='bold')
+    sub_ax.set_ylabel('Mean Arterial Pressure (mmHg)', fontsize=7.2, fontweight='bold')
+    sub_ax.set_title('Longitudinal Arterial Trajectory by Gestational Age', fontsize=8.0, fontweight='bold', color=TEXT_DARK)
+    sub_ax.legend(loc='upper left', fontsize=5.8, framealpha=0.92)
+    sub_ax.grid(True, linestyle=':', alpha=0.6)
+    sub_ax.set_xlim(10, 38)
+    sub_ax.set_ylim(70, 125)
+
+    # 3 Bottom Tiers
+    tiers = [
+        ("GREEN TIER: Standard ANC", "MAP < 85 mmHg\nRoutine 4-visit ANC\nDaily Calcium 1.5g\nBilingual wellness SMS", EMERALD_GREEN, 0.52),
+        ("AMBER TIER: Moderate PIH", "MAP 85-95 mmHg\nLow-Dose Aspirin <16w\n14-day re-evaluation\nHigh-Risk Pregnancy flag", AMBER_GOLD, 0.68),
+        ("RED TIER: Critical HDP", "MAP >= 96 mmHg\nPritchard MgSO4 dose\nOral Labetalol 100mg\nPriority 108 Dispatch", ROSE_RED, 0.84)
     ]
+    for head_text, desc_text, col, x_pos in tiers:
+        card = FancyBboxPatch((x_pos, 0.06), 0.145, 0.28, boxstyle="round,pad=0.008,rounding_size=0.008",
+                              facecolor='#ffffff', edgecolor=col, linewidth=1.3, zorder=3)
+        ax.add_patch(card)
+        ax.text(x_pos + 0.012, 0.305, head_text, fontsize=7.0, fontweight='bold', color=col, zorder=4)
+        ax.text(x_pos + 0.012, 0.100, desc_text, fontsize=6.4, color=TEXT_DARK, zorder=4, wrap=True)
 
-    for sender, text, col, bg, y in wa_messages:
-        b = FancyBboxPatch((0.04, y), 0.43, 0.14, boxstyle="round,pad=0.008,rounding_size=0.008",
-                           facecolor=bg, edgecolor='#bbf7d0', linewidth=1, zorder=3)
-        ax.add_patch(b)
-        ax.text(0.055, y + 0.11, sender, fontsize=7.5, fontweight='bold', color=col, zorder=4)
-        ax.text(0.055, y + 0.02, text, fontsize=6.8, color=NAVY_TEXT, zorder=4, wrap=True)
+    save_diagram_dual(fig, "diagram_3_ai_risk_model", "diagram_3_cadastral_anomaly_catalog")
 
-    # Right Container: Delivery Channels & Accessibility Tech
-    ch_box = FancyBboxPatch((0.51, 0.06), 0.47, 0.81, boxstyle="round,pad=0.015,rounding_size=0.015",
-                            facecolor='#f8fafc', edgecolor='#cbd5e1', linewidth=1.5, zorder=2)
-    ax.add_patch(ch_box)
-    ax.text(0.745, 0.84, "MULTI-CHANNEL ACCESSIBILITY ARCHITECTURE", ha='center', fontsize=10, fontweight='bold', color=NAVY_TEXT, zorder=3)
-
-    channels = [
-        ("1. WhatsApp Business API (Zero Install)", "Pre-integrated with Meta WhatsApp Cloud API. Farmers interact without downloading complex mobile apps, using familiar chat menus.", '#059669', 0.65),
-        ("2. Automated Voice IVRS in Local Dialects", "Automated outbound calls in Assamese, Bengali, and Bodo translating forecasts into audio bulletins for non-literate farmers.", '#0284c7', 0.46),
-        ("3. Telecom Bulk SMS Broadcast (C-DAC)", "Direct geo-targeted flash SMS dispatched to registered farmers across target revenue circles during harvest price surges.", '#d97706', 0.27),
-        ("4. Responsive WebGIS Dashboard for FPOs", "Progressive Web App (PWA) with offline capabilities allowing FPO managers to model bulk shipments on low-bandwidth connectivity.", '#7c3aed', 0.08)
-    ]
-    for head, desc, col, y in channels:
-        b = FancyBboxPatch((0.53, y), 0.43, 0.155, boxstyle="round,pad=0.01,rounding_size=0.01",
-                           facecolor='#ffffff', edgecolor=col, linewidth=1.2, zorder=3)
-        ax.add_patch(b)
-        ax.text(0.545, y + 0.11, head, fontsize=8.5, fontweight='bold', color=col, zorder=4)
-        ax.text(0.545, y + 0.02, desc, fontsize=7.2, color=MUTED_TEXT, zorder=4, wrap=True)
-
-    save_dual(fig, "diagram_5_lat_mandal_mobile_app", "diagram_5_farmer_multilingual_app")
-
-# DIAGRAM 6: Cold Storage Optimization & e-NWR Warehouse Economics
-def create_widescreen_diagram_6():
-    fig, ax = plt.subplots(figsize=(16, 9), dpi=200)
-    ax.set_facecolor(BG_LIGHT)
-    fig.patch.set_facecolor(BG_LIGHT)
+# ==============================================================================
+# DIAGRAM 4: Assam Statewide Geospatial Surveillance
+# ==============================================================================
+def render_diagram_4():
+    fig, ax = plt.subplots(figsize=(16, 9), dpi=220)
+    ax.set_facecolor(BG_WHITE)
+    fig.patch.set_facecolor(BG_WHITE)
     ax.axis('off')
-    add_blueprint_grid(ax)
+    draw_blueprint_grid(ax)
 
-    add_header(ax, "COLD STORAGE OPTIMIZATION & e-NWR COLLATERAL WAREHOUSE ECONOMICS",
-               "Connecting Smallholder Farmers with Certified Storage & Subsidized Institutional Credit",
-               "STORAGE & CREDIT BLUEPRINT")
+    draw_master_header(ax, "ASSAM STATEWIDE EPIDEMIOLOGICAL SURVEILLANCE & VULNERABILITY MAPPING",
+                       "35 Districts Coverage • Upper Assam Tea Belts • Riverine Char Islands • NHM Boat Clinics • FRU Network",
+                       "GEOSPATIAL EPIDEMIOLOGY SENTINEL")
 
-    # Formula Box
-    f_box = FancyBboxPatch((0.02, 0.72), 0.96, 0.14, boxstyle="round,pad=0.01,rounding_size=0.01",
-                           facecolor='#0f172a', edgecolor='#334155', linewidth=1.5, zorder=2)
-    ax.add_patch(f_box)
-    ax.text(0.5, 0.81, "STORAGE RETURN ON INVESTMENT (ROI) FORMULATION", ha='center', fontsize=10, fontweight='bold', color='#38bdf8', zorder=3)
-    ax.text(0.5, 0.75, "ΔΠ_storage(Δd) = [P_forecast(t+Δd) * (1 - λ_loss)] - P_harvest - (R_rent * Δd) - [P_harvest * (r_interest/365) * Δd]",
-            ha='center', fontsize=9, fontfamily='monospace', fontweight='bold', color='#ffffff', zorder=3)
+    # LEFT COLUMN: Priority District Matrix
+    left_card = FancyBboxPatch((0.02, 0.04), 0.46, 0.81, boxstyle="round,pad=0.015,rounding_size=0.015",
+                               facecolor='#f8fafc', edgecolor='#cbd5e1', linewidth=1.5, zorder=2)
+    ax.add_patch(left_card)
+    ax.text(0.04, 0.815, "PRIORITY VULNERABILITY DISTRICTS & SURVEILLANCE MATRIX", fontsize=9.0, fontweight='bold', color=TEXT_DARK, zorder=3)
+
+    districts = [
+        ("Dibrugarh & Tinsukia (Upper Assam)", "160+ Organized Tea Estates • Baseline MMR > 240 per 100k • AMCH Tertiary Hub", "HIGH TEA-BELT BURDEN", ROSE_RED),
+        ("Barpeta & Dhubri (Lower Assam)", "120+ Riverine Char Sandbars • Seasonal Monsoon Inundation • Boat Clinic Sync", "RIVERINE CHAR BARRIER", AMBER_GOLD),
+        ("Sonitpur & Biswanath (North Bank)", "Tea & Rural Mix • Riverine Catchment • Kanaklata Civil Hospital FRU Hub", "HIGH RISK CLUSTER", ROSE_RED),
+        ("Cachar & Karimganj (Barak Valley)", "Hilly Terrain • Isolated Tea Garden Pockets • SMCH Silchar Referral Hub", "GEOGRAPHIC ISOLATION", AMBER_GOLD),
+        ("Kamrup Metro & Greater Guwahati", "Tertiary Centers (GMCH) • Central Command Hub • State Tele-Triage Enclave", "STATE REFERRAL HUB", EMERALD_GREEN)
+    ]
+    for i, (name_t, desc_t, tag_t, col) in enumerate(districts):
+        y = 0.655 - i * 0.145
+        c = FancyBboxPatch((0.035, y), 0.43, 0.128, boxstyle="round,pad=0.008,rounding_size=0.008",
+                           facecolor='#ffffff', edgecolor='#e2e8f0', linewidth=1.1, zorder=3)
+        ax.add_patch(c)
+        ax.text(0.05, y + 0.092, name_t, fontsize=7.8, fontweight='bold', color=TEXT_DARK, zorder=4)
+        ax.text(0.05, y + 0.025, desc_t, fontsize=6.6, color=TEXT_MUTED, zorder=4, wrap=True)
+        
+        # Tag pill
+        tag_box = FancyBboxPatch((0.315, y + 0.082), 0.142, 0.032, boxstyle="round,pad=0.004,rounding_size=0.006",
+                                 facecolor=col, edgecolor=col, zorder=4)
+        ax.add_patch(tag_box)
+        ax.text(0.386, y + 0.098, tag_t, ha='center', va='center', fontsize=5.8, fontweight='bold', color='#ffffff', zorder=5)
+
+    # RIGHT COLUMN: Targeted Operational Interventions
+    right_card = FancyBboxPatch((0.50, 0.04), 0.48, 0.81, boxstyle="round,pad=0.015,rounding_size=0.015",
+                                facecolor='#eff6ff', edgecolor='#93c5fd', linewidth=1.5, zorder=2)
+    ax.add_patch(right_card)
+    ax.text(0.52, 0.815, "TARGETED OPERATIONAL PILLARS: TEA GARDENS & CHAR ISLANDS", fontsize=9.0, fontweight='bold', color='#1e40af', zorder=3)
 
     pillars = [
-        ("COLD STORAGE CAPACITY MAPPING", 0.04, '#0284c7', [
-            ("Directory of 45+ cold storages & 180+ rural warehouses in Assam.", 0.58),
-            ("Real-time occupancy tracking & chamber temperature sensors.", 0.44),
-            ("Preservation longevity calculators based on moisture and grade.", 0.30)
-        ]),
-        ("e-NWR COLLATERAL FINANCING", 0.36, '#059669', [
-            ("Digital link with WDRA-accredited electronic warehouse receipts.", 0.58),
-            ("Instant credit line: Up to 75% of commodity market valuation.", 0.44),
-            ("Subsidized 7% p.a. interest rate via Assam Gramin Vikash Bank (AGVB).", 0.30)
-        ]),
-        ("DECISION THRESHOLD STATE MACHINE", 0.68, '#7c3aed', [
-            ("STORE RECOMMENDATION: If Net Storage ROI > +₹200/quintal.", 0.58),
-            ("HOLD ON-FARM: If price recovery expected within 5 to 7 days.", 0.44),
-            ("SELL IMMEDIATELY: If storage cost exceeds projected price delta.", 0.30)
-        ])
+        ("1. Tea Estate Garden Hospitals Integration",
+         "Over 800 organized tea gardens operate private health dispensaries. MatriDrishti equips Garden Doctors and estate welfare workers with standardized BLE screening tools, bridging tea-industry healthcare directly with government NHM First Referral Units (FRUs).",
+         '#1e3a8a'),
+        ("2. Riverine Island (Char/Chapori) Boat Clinics Synchronization",
+         "Coordinates seamlessly with 15 NHM Boat Clinics navigating the Brahmaputra. Maternal risk rosters pre-load on offline tablets, enabling targeted screening during scheduled island landings even in high monsoon flood waters.",
+         CYAN_ACCENT),
+        ("3. First Referral Unit (FRU) Obstetric ICU Readiness",
+         "Live monitoring across 85+ FRUs and Medical College Hospitals. Tracks availability of Magnesium Sulfate vials, oral labetalol, cross-matched blood units, and neonatal incubators (SNCUs) before emergency ambulance dispatch.",
+         TEAL_PRIMARY),
+        ("4. Real-Time Geospatial Command Heatmaps for State Leadership",
+         "The State Mission Director (NHM Assam) and District Surveillance Officers access live heatmaps identifying micro-clusters of rising mean arterial pressure, triggering rapid supervisory visits and prophylactic campaigns.",
+         PURPLE_DEEP)
     ]
+    for i, (head_t, desc_t, col) in enumerate(pillars):
+        y = 0.635 - i * 0.190
+        c = FancyBboxPatch((0.52, y), 0.44, 0.170, boxstyle="round,pad=0.008,rounding_size=0.008",
+                           facecolor='#ffffff', edgecolor='#bfdbfe', linewidth=1.2, zorder=3)
+        ax.add_patch(c)
+        ax.text(0.535, y + 0.130, head_t, fontsize=7.8, fontweight='bold', color=col, zorder=4)
+        ax.text(0.535, y + 0.018, desc_t, fontsize=6.8, color=TEXT_MUTED, zorder=4, wrap=True)
 
-    for title, x, col, bullets in pillars:
-        hdr = FancyBboxPatch((x, 0.65), 0.28, 0.045, boxstyle="round,pad=0.005,rounding_size=0.008",
-                             facecolor=col, edgecolor=col, linewidth=1, zorder=2)
-        ax.add_patch(hdr)
-        ax.text(x + 0.14, 0.672, title, ha='center', va='center', fontsize=8, fontweight='bold', color='#ffffff', zorder=3)
+    save_diagram_dual(fig, "diagram_4_assam_epidemiology_map", "diagram_4_blockchain_land_registry")
 
-        box = FancyBboxPatch((x, 0.25), 0.28, 0.38, boxstyle="round,pad=0.01,rounding_size=0.01",
-                             facecolor='#ffffff', edgecolor=col, linewidth=1.2, zorder=1)
-        ax.add_patch(box)
-
-        for text, y in bullets:
-            c = FancyBboxPatch((x + 0.015, y), 0.25, 0.11, boxstyle="round,pad=0.008,rounding_size=0.008",
-                               facecolor='#f8fafc', edgecolor='#cbd5e1', linewidth=1, zorder=2)
-            ax.add_patch(c)
-            ax.text(x + 0.025, y + 0.065, text, fontsize=7.0, color=NAVY_TEXT, zorder=3, wrap=True)
-
-    # Bottom impact strip
-    imp_box = FancyBboxPatch((0.02, 0.06), 0.96, 0.16, boxstyle="round,pad=0.01,rounding_size=0.01",
-                             facecolor='#f0fdf4', edgecolor='#86efac', linewidth=1.2, zorder=2)
-    ax.add_patch(imp_box)
-    ax.text(0.04, 0.17, "COMMODITY STORAGE DURATION & ROI MATRIX (EMPIRICAL ASSAM DATA)", fontsize=9, fontweight='bold', color='#166534', zorder=3)
-    ax.text(0.04, 0.10, "• Mustard: Optimal hold 25-40 days (+₹320/q net)  • Paddy (Sali): Optimal hold 45-60 days (+₹280/q net)\n• Potato: Optimal cold store 60-90 days (+₹450/q net)  • Kaji Nemu: Controlled atmosphere 14-21 days (+₹180/q net)",
-            fontsize=7.5, color='#14532d', zorder=3)
-
-    save_dual(fig, "diagram_6_spatial_conflict_resolution", "diagram_6_fpo_storage_optimization")
-
-# DIAGRAM 7: Phased 12-Month Implementation Roadmap & Milestone Budget Breakdown
-def create_widescreen_diagram_7():
-    fig, ax = plt.subplots(figsize=(16, 9), dpi=200)
-    ax.set_facecolor(BG_LIGHT)
-    fig.patch.set_facecolor(BG_LIGHT)
+# ==============================================================================
+# DIAGRAM 5: Frontline ASHA/ANM Mobile UX & CDSS Decision Matrix
+# ==============================================================================
+def render_diagram_5():
+    fig, ax = plt.subplots(figsize=(16, 9), dpi=220)
+    ax.set_facecolor(BG_WHITE)
+    fig.patch.set_facecolor(BG_WHITE)
     ax.axis('off')
-    add_blueprint_grid(ax)
+    draw_blueprint_grid(ax)
 
-    add_header(ax, "PHASED 12-MONTH IMPLEMENTATION ROADMAP & ₹40.00 LAKH GRANT BUDGET",
-               "Milestone-Driven Execution Aligned with Assam Startup NESFIC 2026 Deep-Tech Guidelines",
-               "ROADMAP & BUDGET BLUEPRINT")
+    draw_master_header(ax, "FRONTLINE MOBILE COCKPIT & CLINICAL DECISION SUPPORT SYSTEM (CDSS)",
+                       "Assamese/Bengali Localization • BLE Auto-Sync • Step-by-Step Emergency Triage Protocols",
+                       "FRONTLINE UX & CDSS MATRIX")
 
-    quarters = [
-        ("PHASE 1: INGESTION & MODELS (M1–M3)", 0.02, '#0284c7', [
-            "ASDC cloud environment setup",
-            "Agmarknet & e-NAM ETL pipelines",
-            "Train baseline TFT & LSTM models",
-            "Initial validation: MAPE < 7.5%"
-        ]),
-        ("PHASE 2: 5-DISTRICT PILOT (M4–M6)", 0.265, '#059669', [
-            "Pilot in Darrang, Kamrup, Barpeta, Nagaon, Cachar",
-            "Onboard 50 FPOs on WhatsApp Bot",
-            "Calibrate local truck freight matrices",
-            "Refine model accuracy: MAPE < 6.5%"
-        ]),
-        ("PHASE 3: STATE EXPANSION (M7–M9)", 0.51, '#7c3aed', [
-            "Rollout to all 35 Assam districts",
-            "Integrate 45+ cold storages & e-NWRs",
-            "Onboard 250+ FPOs & 500k farmers",
-            "Activate Directorate MSP Sentinel"
-        ]),
-        ("PHASE 4: HANDOVER & SCALE (M10–M12)", 0.755, '#d97706', [
-            "Handover command consoles to ASAMB",
-            "DAO/ADO administrative training",
-            "CERT-In security VAPT & DPDP audit",
-            "Establish multi-year state SaaS AMC"
-        ])
+    flows = [
+        ("POINT-OF-CARE SCREENING",
+         "Frontline Data Capture Workflow",
+         CYAN_ACCENT,
+         [
+             ("1. ABHA / RCH ID Lookup", "Instant search by ABHA ID, RCH number, or phone. Operates 100% offline in remote rural Sub-Centres."),
+             ("2. One-Touch BLE BP Capture", "Pressing 'Read BP' initiates wireless BLE handshake. SBP, DBP, and pulse auto-populate."),
+             ("3. Urinalysis Dipstick Color Match", "Built-in camera scanner matches protein pad against colorimetric standards (0 to 4+)."),
+             ("4. Neurological Danger Checklist", "Visual prompt icons: Severe Frontal Headache, Visual Blurring, Epigastric Agony, Facial Edema.")
+         ]),
+        ("CLINICAL DECISION SUPPORT (CDSS)",
+         "GoI & WHO Protocol Automation",
+         EMERALD_GREEN,
+         [
+             ("1. Instant MAP & Velocity Calculation", "Calculates Mean Arterial Pressure and evaluates delta velocity against initial booking baseline."),
+             ("2. Low-Dose Aspirin Prophylaxis (<16w)", "System prompt: 'Initiate Aspirin 75-150 mg OD + Calcium 1.5g daily to prevent pre-eclampsia.'"),
+             ("3. Labetalol Titration Protocol", "If SBP >= 150 or DBP >= 100: Oral Labetalol 100 mg BD initiated under Medical Officer tele-direction."),
+             ("4. Pritchard MgSO4 Loading Directive", "Step-by-step 4g IV + 10g deep IM dosage guide with Calcium Gluconate antidote verification.")
+         ]),
+        ("MULTILINGUAL ENGAGEMENT & ESCALATION",
+         "Community Voice & Emergency Bridge",
+         PURPLE_DEEP,
+         [
+             ("1. Assamese Audio Counseling", "Mother listens to automated Assamese/Bengali voice note explaining dietary salt, rest, and danger signs."),
+             ("2. Family WhatsApp Advisory", "Dispatches family advisory in Assamese: 'High Blood Pressure Alert: Follow-up required in 14 days.'"),
+             ("3. Priority 108 Emergency Trigger", "One-click ambulance summon transmitting rural GPS coordinates and clinical triage vitals."),
+             ("4. Receiving FRU Handshake Dossier", "Obstetric specialist at receiving hospital receives pre-arrival dossier with complete vitals history.")
+         ])
     ]
 
-    for title, x, col, bullets in quarters:
-        hdr = FancyBboxPatch((x, 0.77), 0.23, 0.045, boxstyle="round,pad=0.005,rounding_size=0.008",
-                             facecolor=col, edgecolor=col, linewidth=1, zorder=2)
-        ax.add_patch(hdr)
-        ax.text(x + 0.115, 0.792, title, ha='center', va='center', fontsize=7.2, fontweight='bold', color='#ffffff', zorder=3)
+    for idx, (title, sub, col, items) in enumerate(flows):
+        x = 0.02 + idx * 0.325
+        head = FancyBboxPatch((x, 0.765), 0.31, 0.082, boxstyle="round,pad=0.008,rounding_size=0.01",
+                              facecolor=col, edgecolor=col, zorder=2)
+        ax.add_patch(head)
+        ax.text(x + 0.155, 0.816, title, ha='center', va='center', fontsize=7.8, fontweight='bold', color='#ffffff', zorder=3)
+        ax.text(x + 0.155, 0.785, sub, ha='center', va='center', fontsize=6.2, color='#e0f2fe', zorder=3)
 
-        box = FancyBboxPatch((x, 0.44), 0.23, 0.31, boxstyle="round,pad=0.01,rounding_size=0.01",
+        body = FancyBboxPatch((x, 0.04), 0.31, 0.710, boxstyle="round,pad=0.01,rounding_size=0.01",
+                              facecolor='#f8fafc', edgecolor='#cbd5e1', linewidth=1.2, zorder=1)
+        ax.add_patch(body)
+
+        for i, (head_t, desc_t) in enumerate(items):
+            y = 0.575 - i * 0.170
+            box = FancyBboxPatch((x + 0.012, y), 0.286, 0.150, boxstyle="round,pad=0.008,rounding_size=0.008",
+                                 facecolor='#ffffff', edgecolor='#e2e8f0', linewidth=1.1, zorder=2)
+            ax.add_patch(box)
+            ax.text(x + 0.022, y + 0.115, head_t, fontsize=7.2, fontweight='bold', color=TEXT_DARK, zorder=3)
+            ax.text(x + 0.022, 0.018 + y, desc_t, fontsize=6.5, color=TEXT_MUTED, zorder=3, wrap=True)
+
+    save_diagram_dual(fig, "diagram_5_asha_mobile_ux", "diagram_5_lat_mandal_mobile_app")
+
+# ==============================================================================
+# DIAGRAM 6: Emergency Referral Escalation & 108 Logistics Workflow
+# ==============================================================================
+def render_diagram_6():
+    fig, ax = plt.subplots(figsize=(16, 9), dpi=220)
+    ax.set_facecolor(BG_WHITE)
+    fig.patch.set_facecolor(BG_WHITE)
+    ax.axis('off')
+    draw_blueprint_grid(ax)
+
+    draw_master_header(ax, "CLOSED-LOOP EMERGENCY REFERRAL & 108 MRITYUNJOY ESCALATION",
+                       "Automated Tele-Consult • GPS Ambulance Dispatch • Obstetric ICU Bed Reservation • Receiving Hospital Handshake",
+                       "EMERGENCY REFERRAL LOGISTICS")
+
+    stages = [
+        ("STAGE 1: RED FLAG DETECTED",
+         "Frontline Sub-Centre / Tea Estate",
+         "• SBP >= 140 or DBP >= 90 mmHg\n• Proteinuria >= 2+\n• Neurological danger symptoms\n• System triggers 'CRITICAL' flag\n• Timestamped to ASDC Cloud",
+         ROSE_RED, 0.02),
+        ("STAGE 2: TELE-CONSULT & STABILIZE",
+         "PHC / CHC Medical Officer Bridge",
+         "• Tele-consult with Medical Officer\n• Pritchard MgSO4 loading protocol\n• 4g IV + 10g deep IM administered\n• Patellar reflex & urine output check\n• Oral labetalol 100mg given",
+         AMBER_GOLD, 0.265),
+        ("STAGE 3: 108 AMBULANCE DISPATCH",
+         "GVK EMRI Mrityunjoy Fleet Sync",
+         "• Automated API payload to 108 CAD\n• Nearest ALS/BLS ambulance routed\n• Live GPS telemetry on ASHA phone\n• Boat-clinic rendezvous if in char\n• Transit time compressed by 45 min",
+         CYAN_ACCENT, 0.51),
+        ("STAGE 4: FRU OBSTETRIC ICU BED",
+         "Tertiary Hospital (AMCH/GMCH/FRU)",
+         "• Obstetric ICU bed pre-reserved\n• Blood bank notified for cross-match\n• Neonatal warmer & SNCU alerted\n• Instant EHR transfer via ABDM\n• Zero-delay emergency admission",
+         EMERALD_GREEN, 0.755)
+    ]
+
+    for title, sub, desc, col, x in stages:
+        head = FancyBboxPatch((x, 0.765), 0.23, 0.082, boxstyle="round,pad=0.008,rounding_size=0.01",
+                              facecolor=col, edgecolor=col, zorder=2)
+        ax.add_patch(head)
+        ax.text(x + 0.115, 0.816, title, ha='center', va='center', fontsize=7.2, fontweight='bold', color='#ffffff', zorder=3)
+        ax.text(x + 0.115, 0.785, sub, ha='center', va='center', fontsize=6.0, color='#e0f2fe', zorder=3)
+
+        body = FancyBboxPatch((x, 0.38), 0.23, 0.370, boxstyle="round,pad=0.01,rounding_size=0.01",
+                              facecolor='#ffffff', edgecolor='#cbd5e1', linewidth=1.2, zorder=1)
+        ax.add_patch(body)
+        ax.text(x + 0.015, 0.720, desc, fontsize=7.0, color=TEXT_DARK, zorder=3, wrap=True)
+
+    # Bottom Impact Banner
+    b_banner = FancyBboxPatch((0.02, 0.04), 0.965, 0.31, boxstyle="round,pad=0.01,rounding_size=0.01",
+                              facecolor=NAVY_CARD, edgecolor='#334155', linewidth=1.5, zorder=2)
+    ax.add_patch(b_banner)
+    ax.text(0.04, 0.315, "MEASURABLE CLINICAL IMPACT OF CLOSED-LOOP EMERGENCY REFERRAL", fontsize=9.2, fontweight='bold', color='#38bdf8', zorder=3)
+
+    impacts = [
+        ("Transit Latency", "Compressed by 45 Mins", "Eliminates delays in 108 ambulance coordination across remote rural hamlets", '#38bdf8', 0.04),
+        ("Pre-Referral MgSO4", "From 14% to 82%", "Frontline administration prevents lethal eclamptic convulsions in transit", '#4ade80', 0.28),
+        ("Pre-Arrival ICU Prep", "100% Zero-Delay", "Blood bank and obstetric teams are pre-alerted before ambulance arrival", '#fbbf24', 0.52),
+        ("Perinatal Survival", "+28% Fetal Salvage", "Prevents placental abruption and severe birth asphyxia during transit", '#f472b6', 0.76)
+    ]
+    for label, val, exp, col, x in impacts:
+        card = FancyBboxPatch((x, 0.08), 0.215, 0.21, boxstyle="round,pad=0.008,rounding_size=0.008",
+                              facecolor='#1e293b', edgecolor=col, linewidth=1.2, zorder=3)
+        ax.add_patch(card)
+        ax.text(x + 0.012, 0.245, val, fontsize=10.5, fontweight='bold', color=col, zorder=4)
+        ax.text(x + 0.012, 0.200, label, fontsize=7.2, fontweight='bold', color='#ffffff', zorder=4)
+        ax.text(x + 0.012, 0.105, exp, fontsize=6.2, color='#94a3b8', zorder=4, wrap=True)
+
+    save_diagram_dual(fig, "diagram_6_referral_escalation", "diagram_6_spatial_conflict_resolution")
+
+# ==============================================================================
+# DIAGRAM 7: Phased 12-Month Implementation Roadmap & Budget (₹40 Lakh)
+# ==============================================================================
+def render_diagram_7():
+    fig, ax = plt.subplots(figsize=(16, 9), dpi=220)
+    ax.set_facecolor(BG_WHITE)
+    fig.patch.set_facecolor(BG_WHITE)
+    ax.axis('off')
+    draw_blueprint_grid(ax)
+
+    draw_master_header(ax, "12-MONTH IMPLEMENTATION ROADMAP & GRANT BUDGET UTILIZATION (Rs 40.00 LAKH)",
+                       "Agile Phased Rollout • High-Burden Pilots • Statewide Institutionalization • NHM Handover",
+                       "ROADMAP & BUDGET ALLOCATION")
+
+    phases = [
+        ("PHASE 1: CLINICAL CO-DESIGN (M1-M3)",
+         "AMCH & GMCH Collaboration",
+         ['Form Joint Clinical Advisory with AMCH & GMCH',
+          'Standardize GoI/WHO Aspirin & MgSO4 rule sets',
+          'ASDC Sovereign Kubernetes & TimescaleDB setup',
+          'Pairing profiles for CDSCO BLE digital BP cuffs'],
+         CYAN_ACCENT, 0.02),
+        ("PHASE 2: HIGH-BURDEN PILOT (M4-M6)",
+         "Dibrugarh (Tea) & Barpeta (Char)",
+         ['Procure 800 certified BLE cuffs & dipstick kits',
+          'Deploy in 40 Tea Estates & 35 Char Sub-Centres',
+          'Train 500 ASHAs & 120 ANMs in bilingual app',
+          'Establish 6,000 pregnant women screening baseline'],
+         TEAL_PRIMARY, 0.265),
+        ("PHASE 3: 5-DISTRICT SCALE (M7-M9)",
+         "Tinsukia, Dhubri & Sonitpur",
+         ['Expand to 2,500 ASHAs and 600 ANMs',
+          'API integration with 108 Mrityunjoy dispatch',
+          'Launch bilingual Assamese/Bengali voice advisories',
+          'Calibrate XGBoost MAP models on local data'],
+         AMBER_GOLD, 0.51),
+        ("PHASE 4: STATE HANDOVER (M10-M12)",
+         "Full Integration & NHM Handover",
+         ['Bi-directional sync with national e-Kavach / ANMOL',
+          'ABDM M1/M2/M3 certification audit',
+          'Multi-centric clinical validation report to NHM',
+          'Transfer codebase & credentials to Assam IT team'],
+         EMERALD_GREEN, 0.755)
+    ]
+
+    for title, sub, bullets, col, x in phases:
+        head = FancyBboxPatch((x, 0.765), 0.23, 0.082, boxstyle="round,pad=0.008,rounding_size=0.01",
+                              facecolor=col, edgecolor=col, zorder=2)
+        ax.add_patch(head)
+        ax.text(x + 0.115, 0.816, title, ha='center', va='center', fontsize=6.8, fontweight='bold', color='#ffffff', zorder=3)
+        ax.text(x + 0.115, 0.785, sub, ha='center', va='center', fontsize=6.0, color='#e0f2fe', zorder=3)
+
+        box = FancyBboxPatch((x, 0.43), 0.23, 0.320, boxstyle="round,pad=0.01,rounding_size=0.01",
                              facecolor='#ffffff', edgecolor=col, linewidth=1.2, zorder=1)
         ax.add_patch(box)
 
         for i, b in enumerate(bullets):
-            ax.text(x + 0.015, 0.70 - i * 0.08, f"• {b}", fontsize=7.0, color=NAVY_TEXT, zorder=3, wrap=True)
+            ax.text(x + 0.015, 0.710 - i * 0.080, f"- {b}", fontsize=6.8, color=TEXT_DARK, zorder=3, wrap=True)
 
     # Bottom: Budget Breakdown (₹40 Lakh)
-    b_box = FancyBboxPatch((0.02, 0.06), 0.96, 0.33, boxstyle="round,pad=0.01,rounding_size=0.01",
-                           facecolor='#0f172a', edgecolor='#334155', linewidth=1.5, zorder=2)
+    b_box = FancyBboxPatch((0.02, 0.04), 0.965, 0.36, boxstyle="round,pad=0.01,rounding_size=0.01",
+                           facecolor=NAVY_CARD, edgecolor='#334155', linewidth=1.5, zorder=2)
     ax.add_patch(b_box)
-    ax.text(0.04, 0.34, "GRANT BUDGET UTILIZATION BREAKDOWN (TOTAL: ₹40.00 LAKH - DEEP TECH TRACK)", fontsize=9.5, fontweight='bold', color='#38bdf8', zorder=3)
+    ax.text(0.04, 0.365, "STATUTORY GRANT BUDGET BREAKDOWN (TOTAL: Rs 40.00 LAKH - NESFIC-D-23)", fontsize=9.2, fontweight='bold', color='#38bdf8', zorder=3)
 
     budget_items = [
-        ("Deep-Tech AI/ML & Core Engineering", "₹14.50 L", "36.25%", '#0284c7', 0.04),
-        ("ASDC Compute & GPU Clusters (NVIDIA L4)", "₹6.50 L", "16.25%", '#7c3aed', 0.20),
-        ("Mandi Surveys & 50-FPO Field Pilot", "₹5.50 L", "13.75%", '#059669', 0.36),
-        ("WhatsApp API, SMS & Voice IVRS", "₹4.50 L", "11.25%", '#d97706', 0.52),
-        ("Sentinel-2 NDVI & Ingestion APIs", "₹4.00 L", "10.00%", '#06b6d4', 0.68),
-        ("Security Audit, DPDP & Contingency", "₹5.00 L", "12.50%", '#dc2626', 0.84)
+        ("Telemetry Hardware & Screening Kits", "Rs 11.20 L", "28.00%", CYAN_ACCENT, 0.04),
+        ("Edge-AI & ASDC Cloud Software", "Rs 10.40 L", "26.00%", PURPLE_DEEP, 0.20),
+        ("Frontline Training & Honoraria", "Rs 6.80 L", "17.00%", EMERALD_GREEN, 0.36),
+        ("Clinical Co-Design & Validation", "Rs 4.60 L", "11.50%", AMBER_GOLD, 0.52),
+        ("Cloud, SMS & Voice Gateway", "Rs 4.20 L", "10.50%", '#06b6d4', 0.68),
+        ("Cybersecurity & ABDM Audit", "Rs 2.80 L", "7.00%", ROSE_RED, 0.84)
     ]
     for name, amt, pct, col, x in budget_items:
-        c = FancyBboxPatch((x, 0.10), 0.145, 0.21, boxstyle="round,pad=0.008,rounding_size=0.008",
+        c = FancyBboxPatch((x, 0.08), 0.145, 0.25, boxstyle="round,pad=0.008,rounding_size=0.008",
                            facecolor='#1e293b', edgecolor=col, linewidth=1.2, zorder=3)
         ax.add_patch(c)
-        ax.text(x + 0.012, 0.26, amt, fontsize=11, fontweight='bold', color=col, zorder=4)
-        ax.text(x + 0.012, 0.22, f"Share: {pct}", fontsize=7.5, color='#94a3b8', zorder=4)
-        ax.text(x + 0.012, 0.13, name, fontsize=7.0, color='#ffffff', zorder=4, wrap=True)
+        ax.text(x + 0.012, 0.285, amt, fontsize=10.5, fontweight='bold', color=col, zorder=4)
+        ax.text(x + 0.012, 0.245, f"Share: {pct}", fontsize=7.2, color='#94a3b8', zorder=4)
+        ax.text(x + 0.012, 0.125, name, fontsize=6.8, color='#ffffff', zorder=4, wrap=True)
 
-    save_dual(fig, "diagram_7_enterprise_system_architecture", "diagram_7_roadmap_and_budget")
+    save_diagram_dual(fig, "diagram_7_enterprise_system_architecture", "diagram_7_roadmap_budget")
 
 if __name__ == '__main__':
-    print("Generating High-Impact 16:9 Widescreen Infographics for NESFIC-D-35...")
-    create_widescreen_diagram_1()
-    create_widescreen_diagram_2()
-    create_widescreen_diagram_3()
-    create_widescreen_diagram_4()
-    create_widescreen_diagram_5()
-    create_widescreen_diagram_6()
-    create_widescreen_diagram_7()
-    print("All 7 16:9 infographics generated successfully!")
+    print("Generating High-Impact 16:9 Widescreen Technological Framework Infographics...")
+    render_diagram_1()
+    render_diagram_2()
+    render_diagram_3()
+    render_diagram_4()
+    render_diagram_5()
+    render_diagram_6()
+    render_diagram_7()
+    print("All 7 High-Impact 16:9 Infographics rendered successfully!")

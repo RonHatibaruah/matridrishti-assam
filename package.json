@@ -1,14 +1,14 @@
 {
-  "name": "krishidrishti-assam",
+  "name": "matridrishti-assam",
   "private": true,
   "version": "1.0.0",
-  "description": "KrishiDrishti (কৃষি-দৃষ্টি) - Agricultural Commodity Price Intelligence & Forecasting for Farmer Decisions (NESFIC-D-35)",
+  "description": "MatriDrishti (মাতৃ-দৃষ্টি) - Assam Maternal Hypertensive Intelligence & Early PIH Detection Platform (NESFIC-D-23)",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "pages:build": "npm run build",
-    "deploy": "wrangler pages deploy dist --project-name=krishidrishti-assam",
+    "deploy": "wrangler pages deploy dist --project-name=matridrishti-assam",
     "preview": "vite preview"
   },
   "dependencies": {

@@ -1,96 +1,112 @@
 import React from 'react';
-import { Wheat, ShieldCheck, Database, Satellite, AlertCircle } from 'lucide-react';
+import { HeartPulse, ShieldCheck, FileText, Download, AlertTriangle } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   return (
-    <footer className="bg-slate-950 border-t border-slate-800 text-slate-400 text-xs py-8 mt-auto">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          {/* Brand Info */}
-          <div className="space-y-3">
-            <div className="flex items-center gap-2">
-              <div className="p-1.5 bg-emerald-600 rounded-lg text-white">
-                <Wheat className="w-4 h-4" />
-              </div>
-              <span className="font-bold text-white text-sm">KrishiDrishti (কৃষি-দৃষ্টি)</span>
+    <footer className="bg-slate-950 border-t border-slate-800 mt-auto py-8 text-xs text-slate-400">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+        {/* Top Branding & Status */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-900 pb-6">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-emerald-600/20 text-emerald-400 flex items-center justify-center border border-emerald-500/30">
+              <HeartPulse className="w-5 h-5" />
             </div>
-            <p className="text-slate-400 text-[11px] leading-relaxed">
-              AI-Powered Agricultural Commodity Price Intelligence, Multi-Horizon Forecasting and Farmer Decision Platform for the Government of Assam.
-            </p>
-            <div className="flex items-center gap-1.5 text-[10px] text-emerald-400 font-mono">
-              <ShieldCheck className="w-3.5 h-3.5" />
-              <span>NESFIC-D-35 Stream 1 • Government Track</span>
+            <div>
+              <span className="font-bold text-white text-sm">
+                MatriDrishti <span className="text-emerald-400">মাতৃ-দৃষ্টি</span>
+              </span>
+              <p className="text-[11px] text-slate-400">
+                Assam Maternal Hypertensive Intelligence & Early PIH Detection Sentinel
+              </p>
             </div>
           </div>
 
-          {/* Sponsoring Bodies */}
-          <div>
-            <h4 className="font-semibold text-slate-200 mb-2 text-xs uppercase tracking-wider">Challenge Owners</h4>
-            <ul className="space-y-1.5 text-[11px] text-slate-400">
-              <li>Department of Agriculture, Government of Assam</li>
-              <li>Assam State Agricultural Marketing Board (ASAMB)</li>
-              <li>Agricultural Market Intelligence Unit (AMIU) - AAU Jorhat</li>
-              <li>Assam Agribusiness and Rural Transformation Project (APART)</li>
-            </ul>
-          </div>
-
-          {/* Data Infrastructure */}
-          <div>
-            <h4 className="font-semibold text-slate-200 mb-2 text-xs uppercase tracking-wider">Data Ingestion Partners</h4>
-            <ul className="space-y-1.5 text-[11px] text-slate-400">
-              <li className="flex items-center gap-1.5">
-                <Database className="w-3 h-3 text-emerald-400" />
-                <span>Agmarknet & e-NAM Mandi Transformed Feeds</span>
-              </li>
-              <li className="flex items-center gap-1.5">
-                <Satellite className="w-3 h-3 text-cyan-400" />
-                <span>Copernicus Sentinel-2 Crop NDVI Phenology</span>
-              </li>
-              <li className="flex items-center gap-1.5">
-                <Database className="w-3 h-3 text-blue-400" />
-                <span>IMD Automatic Weather Station (AWS) Grids</span>
-              </li>
-              <li className="flex items-center gap-1.5">
-                <Database className="w-3 h-3 text-purple-400" />
-                <span>WDRA Certified Cold Storage & e-NWR Registries</span>
-              </li>
-            </ul>
-          </div>
-
-          {/* Statutory Mandate Notice */}
-          <div>
-            <h4 className="font-semibold text-slate-200 mb-2 text-xs uppercase tracking-wider">Regulatory Compliance</h4>
-            <p className="text-[11px] text-slate-400 leading-relaxed">
-              Engineered for deployment within the secure Assam State Data Centre (ASDC). Strictly compliant with the Digital Personal Data Protection (DPDP) Act 2023 with SHA-256 pseudonymized farmer telemetry.
-            </p>
-            <div className="mt-3 text-[11px] text-emerald-400 font-mono">
-              Built for North-East Seva First Innovation Challenge (NESFIC 2026)
-            </div>
+          <div className="flex flex-wrap items-center gap-3 text-[11px]">
+            <span className="px-2.5 py-1 rounded-md bg-slate-900 border border-slate-800 text-slate-300">
+              Government of Assam • Health & Family Welfare & NHM
+            </span>
+            <span className="px-2.5 py-1 rounded-md bg-emerald-950/80 border border-emerald-800 text-emerald-300 font-mono">
+              NESFIC-D-23 (Govt Track)
+            </span>
           </div>
         </div>
 
-        {/* Prominent Statutory & Operational Disclaimer Box */}
-        <div className="mb-6 p-4 rounded-xl bg-slate-900/90 border border-slate-800 text-[11px] text-slate-300 leading-relaxed">
-          <div className="flex items-center gap-2 text-amber-400 font-semibold mb-1.5">
-            <AlertCircle className="w-4 h-4 shrink-0" />
-            <span className="uppercase tracking-wider text-[10px]">Official Prototype & Technology Demonstration Disclaimer</span>
+        {/* 3-Column Info & Portal Downloads */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-[11px]">
+          <div>
+            <span className="font-semibold text-slate-200 block mb-2">Project Sponsorship & Governance</span>
+            <p className="leading-relaxed text-slate-400">
+              Engineered under the North East Seva First Innovation Challenge (NESFIC 2026), executed by the Assam Innovation & Startup Foundation (AISF) and DIIS, Government of Assam.
+            </p>
           </div>
-          <p>
-            <strong>KrishiDrishti (কৃষি-দৃষ্টি)</strong> is a verified working prototype and technical proposal developed by <strong>Ron Hatibaruah</strong> for the <strong>North-East Seva First Innovation Challenge (NESFIC 2026)</strong> under the Government of Assam, Department of Agriculture (Problem Statement ID: <code>NESFIC-D-35</code>). Price forecasting trajectories, quantile uncertainty bounds ($P_{10}, P_{50}, P_{90}$), and spatial mandi arbitrage calculations are simulated and benchmarked using deep learning sequence neural networks (Temporal Fusion Transformers) trained on historical Agmarknet, e-NAM, and AAU Jorhat AMIU datasets. Commercial procurement directives, statutory MSP enforcement, and e-NWR warehouse pledge loans are subject to administrative ratification by the Assam State Agricultural Marketing Board (ASAMB) and participating financial institutions.
+
+          <div>
+            <span className="font-semibold text-slate-200 block mb-2">Clinical Architecture & Standards</span>
+            <p className="leading-relaxed text-slate-400">
+              Ayushman Bharat Digital Mission (ABDM M1/M2/M3) compliant, HL7 FHIR R4 schema bindings, offline-first PouchDB edge synchronization, and hosted securely within the sovereign perimeter of the Assam State Data Centre (ASDC).
+            </p>
+          </div>
+
+          <div>
+            <span className="font-semibold text-slate-200 block mb-2">Official Dossier Downloads (PDF & TXT)</span>
+            <ul className="space-y-1 text-slate-300">
+              <li>
+                <a
+                  href="/downloads/NESFIC_D23_Proposal_Ron_Hatibaruah.pdf"
+                  download
+                  className="text-cyan-400 hover:underline flex items-center gap-1.5"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  <span>Proposal Dossier (PDF 3.7MB)</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/downloads/NESFIC_D23_Proof_of_Work_Ron_Hatibaruah.pdf"
+                  download
+                  className="text-cyan-400 hover:underline flex items-center gap-1.5"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  <span>Proof of Work Dossier (PDF 3.7MB)</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/downloads/NESFIC_D23_Proposal_Ron_Hatibaruah.txt"
+                  download
+                  className="text-emerald-400 hover:underline flex items-center gap-1.5"
+                >
+                  <FileText className="w-3.5 h-3.5" />
+                  <span>Proposal Text Version (TXT copy-paste)</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/downloads/NESFIC_D23_Proof_of_Work_Ron_Hatibaruah.txt"
+                  download
+                  className="text-emerald-400 hover:underline flex items-center gap-1.5"
+                >
+                  <FileText className="w-3.5 h-3.5" />
+                  <span>Proof of Work Text Version (TXT copy-paste)</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Prominent Clinical & Regulatory Disclaimer Box */}
+        <div className="p-4 bg-slate-900/90 rounded-xl border border-slate-800 text-[11px] space-y-1.5 text-slate-300 shadow-sm">
+          <div className="flex items-center gap-2 text-amber-400 font-bold uppercase tracking-wider text-[11px]">
+            <AlertTriangle className="w-4 h-4 text-amber-400 flex-shrink-0" />
+            <span>Clinical & Regulatory Disclaimer</span>
+          </div>
+          <p className="leading-relaxed text-slate-400">
+            <strong>MatriDrishti (মাতৃ-দৃষ্টি)</strong> is an AI-assisted clinical decision-support and early risk-stratification system developed under the North East Seva First Innovation Challenge (NESFIC 2026) for the Department of Health & Family Welfare and National Health Mission (NHM), Government of Assam. The software provides algorithmic risk scoring (Mean Arterial Pressure velocity tracking and multi-factor classification) and protocol recommendations (e.g., Low-Dose Aspirin prophylaxis, oral labetalol titration, and Pritchard Magnesium Sulfate loading) to assist accredited frontline healthcare workers (ASHAs and ANMs) and registered Medical Officers. It does not replace independent clinical evaluation or specialized diagnostic judgment by a licensed obstetrician or physician. Medical emergencies, pharmacotherapy, and 108 ambulance transfers must be confirmed and executed under authorized clinical supervision in compliance with Government of India (GoI) Maternal Health Guidelines and ABDM standards.
           </p>
         </div>
 
-        <div className="pt-4 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-500">
-          <div>
-            &copy; 2026 Department of Agriculture, Government of Assam. Developed by <strong>Ron Hatibaruah</strong> (Lead Innovator & AI Systems Architect).
-          </div>
-          <div className="flex items-center gap-4">
-            <span className="hover:text-slate-300">Privacy Policy (DPDP 2023)</span>
-            <span>•</span>
-            <span className="hover:text-slate-300">ASAMB Open Data Portal</span>
-            <span>•</span>
-            <span className="hover:text-slate-300">ASDC Enclave SLA</span>
-          </div>
+        <div className="pt-2 text-center text-[10px] text-slate-500">
+          © 2026 Government of Assam ● National Health Mission (NHM). All Rights Reserved. Applicant: <strong>Ron Hatibaruah</strong>.
         </div>
       </div>
     </footer>

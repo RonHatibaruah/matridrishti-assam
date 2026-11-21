@@ -1,19 +1,17 @@
 import React from 'react';
-import { 
-  TrendingUp, 
-  MapPin, 
-  HelpCircle, 
-  Lock, 
-  UserCheck, 
-  ShieldCheck,
-  Wheat,
-  Warehouse,
-  MessageSquare,
-  ArrowLeftRight,
+import {
+  HeartPulse,
+  Activity,
+  MapPin,
+  Ambulance,
+  Radio,
   BarChart3,
-  BookOpen
+  BookOpen,
+  FileText,
+  ShieldCheck,
+  UserCheck
 } from 'lucide-react';
-import { AdminUser } from '../types/agri';
+import { ClinicalUser } from '../types/maternal';
 
 interface NavbarProps {
   activeTab: string;
@@ -21,8 +19,9 @@ interface NavbarProps {
   selectedRole: string;
   setSelectedRole: (role: string) => void;
   onOpenTutorial: () => void;
-  adminUser: AdminUser | null;
-  onOpenAdminLogin: () => void;
+  onOpenTextDossier: () => void;
+  currentUser: ClinicalUser | null;
+  onOpenLoginModal: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -31,197 +30,157 @@ export const Navbar: React.FC<NavbarProps> = ({
   selectedRole,
   setSelectedRole,
   onOpenTutorial,
-  adminUser,
-  onOpenAdminLogin
+  onOpenTextDossier,
+  currentUser,
+  onOpenLoginModal
 }) => {
+  const navTabs = [
+    { id: 'cockpit', label: 'Screening Cockpit', icon: HeartPulse, badge: 'Live BLE' },
+    { id: 'trajectories', label: 'MAP Trajectories', icon: Activity, badge: 'AI Model' },
+    { id: 'surveillance', label: 'Assam Geospatial Map', icon: MapPin, badge: '35 Dists' },
+    { id: 'referrals', label: '108 Referral Hub', icon: Ambulance, badge: 'Emergency' },
+    { id: 'advisory', label: 'Audio & Advisory', icon: Radio, badge: 'Bilingual' },
+    { id: 'command', label: 'NHM State Command', icon: BarChart3, badge: 'Leadership' }
+  ];
+
   return (
     <header className="bg-slate-900 border-b border-slate-800 sticky top-0 z-50 shadow-md">
-      {/* Top Government Banner */}
-      <div className="bg-slate-950 px-4 py-1.5 text-xs text-slate-400 border-b border-slate-800/80 flex flex-wrap justify-between items-center gap-2">
-        <div className="flex items-center gap-3">
-          <span className="font-semibold text-emerald-400 flex items-center gap-1.5">
-            <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            GOVERNMENT OF ASSAM
-          </span>
-          <span className="text-slate-600">|</span>
-          <span>Department of Agriculture ● ASAMB ● AAU Jorhat AMIU</span>
-          <span className="text-slate-600">|</span>
-          <span className="bg-emerald-950 text-emerald-300 px-2 py-0.5 rounded font-mono text-[10px] border border-emerald-800/60">
-            NESFIC-D-35 Stream 1
-          </span>
-        </div>
-        <div className="flex items-center gap-4 text-[11px]">
-          <span className="text-slate-400">Assam State Data Centre (ASDC) • Agri-Intelligence Enclave</span>
-          <button 
-            onClick={onOpenTutorial}
-            className="flex items-center gap-1 text-emerald-400 hover:text-emerald-300 transition-colors font-semibold cursor-pointer underline decoration-dotted"
-            title="Learn what the application is and how to use it"
-          >
-            <HelpCircle className="w-3.5 h-3.5" />
-            <span>Tutorial: What It Is & How To Use</span>
-          </button>
+      {/* Top Government Strip */}
+      <div className="bg-gradient-to-r from-emerald-950 via-slate-900 to-teal-950 px-4 py-1.5 border-b border-emerald-900/40 text-xs text-slate-300">
+        <div className="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
+          <div className="flex items-center gap-2">
+            <span className="font-semibold text-emerald-400">Government of Assam</span>
+            <span className="text-slate-500">•</span>
+            <span>Health & Family Welfare Department & National Health Mission (NHM)</span>
+            <span className="text-slate-500">•</span>
+            <span className="bg-emerald-900/60 text-emerald-300 px-2 py-0.5 rounded text-[11px] font-mono border border-emerald-700/50">
+              NESFIC-D-23: Early Detection of PIH
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            {/* Prominent Tutorial Link */}
+            <button
+              onClick={onOpenTutorial}
+              className="flex items-center gap-1.5 text-emerald-300 hover:text-white transition-colors bg-emerald-900/60 hover:bg-emerald-800 px-2.5 py-1 rounded-md border border-emerald-700 font-medium text-[11px]"
+              title="What the application is and how to use it"
+            >
+              <BookOpen className="w-3.5 h-3.5 text-emerald-400" />
+              <span>Tutorial: What It Is & How to Use</span>
+            </button>
+
+            {/* Copy-Paste Text Dossier Link */}
+            <button
+              onClick={onOpenTextDossier}
+              className="flex items-center gap-1.5 text-cyan-300 hover:text-white transition-colors bg-cyan-950/70 hover:bg-cyan-900 px-2.5 py-1 rounded-md border border-cyan-800 font-medium text-[11px]"
+              title="Copy-paste ready plain text versions of the proposal"
+            >
+              <FileText className="w-3.5 h-3.5 text-cyan-400" />
+              <span className="hidden sm:inline">Copy Text Dossier</span>
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Main Navbar */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap justify-between items-center gap-4">
-        {/* Brand */}
-        <div className="flex items-center gap-3 cursor-pointer" onClick={() => setActiveTab('executive')}>
-          <div className="p-2.5 bg-gradient-to-br from-emerald-500 to-teal-700 rounded-xl shadow-lg shadow-emerald-500/20 text-white flex items-center justify-center">
-            <Wheat className="w-6 h-6 animate-pulse" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="text-xl font-bold tracking-tight text-white flex items-center gap-1.5">
-                KrishiDrishti <span className="text-emerald-400 font-normal text-sm">● কৃষি-দৃষ্টি</span>
-              </span>
-              <span className="text-[10px] font-mono bg-emerald-950 text-emerald-300 border border-emerald-800/70 px-1.5 py-0.5 rounded">
-                v2.6 AI
-              </span>
+      {/* Main Navigation Bar */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo & Platform Name */}
+          <div className="flex items-center gap-3 cursor-pointer" onClick={() => setActiveTab('cockpit')}>
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 via-teal-600 to-cyan-700 flex items-center justify-center shadow-lg shadow-emerald-950/50 border border-emerald-400/30">
+              <HeartPulse className="w-6 h-6 text-white animate-pulse" />
             </div>
-            <p className="text-xs text-slate-400">
-              Assam Agricultural Commodity Price Intelligence & Forecasting Sentinel
-            </p>
-          </div>
-        </div>
-
-        {/* Navigation Tabs */}
-        <nav className="flex items-center gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800/80 overflow-x-auto max-w-full">
-          <button
-            onClick={() => setActiveTab('executive')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
-              activeTab === 'executive'
-                ? 'bg-emerald-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
-            }`}
-          >
-            <BarChart3 className="w-3.5 h-3.5" />
-            <span>Overview</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('forecast')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
-              activeTab === 'forecast'
-                ? 'bg-emerald-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
-            }`}
-          >
-            <TrendingUp className="w-3.5 h-3.5" />
-            <span>AI Forecaster</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('arbitrage')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
-              activeTab === 'arbitrage'
-                ? 'bg-emerald-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
-            }`}
-          >
-            <ArrowLeftRight className="w-3.5 h-3.5" />
-            <span>Hold / Sell / Route</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('map')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
-              activeTab === 'map'
-                ? 'bg-emerald-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
-            }`}
-          >
-            <MapPin className="w-3.5 h-3.5" />
-            <span>Mandi WebGIS</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('storage')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
-              activeTab === 'storage'
-                ? 'bg-emerald-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
-            }`}
-          >
-            <Warehouse className="w-3.5 h-3.5" />
-            <span>Cold Storage / e-NWR</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('advisory')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
-              activeTab === 'advisory'
-                ? 'bg-emerald-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
-            }`}
-          >
-            <MessageSquare className="w-3.5 h-3.5" />
-            <span>Farmer Advisory</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('admin')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
-              activeTab === 'admin'
-                ? 'bg-emerald-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
-            }`}
-          >
-            <ShieldCheck className="w-3.5 h-3.5 text-cyan-400" />
-            <span>Directorate Command</span>
-          </button>
-        </nav>
-
-        {/* User Role Switcher, Tutorial Guide & Auth */}
-        <div className="flex items-center gap-2">
-          {/* Prominent Header Tutorial Button */}
-          <button
-            onClick={onOpenTutorial}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-950/80 border border-emerald-600/80 text-emerald-300 text-xs font-semibold hover:bg-emerald-900 transition-colors shadow-sm cursor-pointer whitespace-nowrap"
-            title="Open comprehensive tutorial & evaluator guide"
-          >
-            <BookOpen className="w-3.5 h-3.5 text-emerald-400" />
-            <span className="hidden sm:inline">Tutorial & Guide</span>
-            <span className="sm:hidden">Guide</span>
-          </button>
-
-          <div className="hidden xl:flex items-center gap-1.5 bg-slate-950 px-2 py-1 rounded-lg border border-slate-800 text-xs">
-            <span className="text-slate-400 text-[11px]">Role:</span>
-            <select
-              value={selectedRole}
-              onChange={(e) => setSelectedRole(e.target.value)}
-              className="bg-transparent text-emerald-300 font-medium focus:outline-none cursor-pointer text-xs"
-            >
-              <option value="DIRECTORATE" className="bg-slate-900 text-slate-200">
-                Directorate of Agriculture (State HQ)
-              </option>
-              <option value="ASAMB" className="bg-slate-900 text-slate-200">
-                ASAMB Mandi Secretary (Market Committee)
-              </option>
-              <option value="FPO" className="bg-slate-900 text-slate-200">
-                Farmer Producer Org (FPO Manager)
-              </option>
-            </select>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-lg font-bold tracking-tight text-white">
+                  MatriDrishti <span className="text-emerald-400 font-normal">মাতৃ-দৃষ্টি</span>
+                </span>
+                <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                  PIH Sentinel
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-400">
+                Assam Maternal Hypertensive Intelligence & Early Pre-Eclampsia Network
+              </p>
+            </div>
           </div>
 
-          {adminUser ? (
+          {/* Center Navigation Tabs */}
+          <nav className="hidden lg:flex items-center gap-1">
+            {navTabs.map((tab) => {
+              const Icon = tab.icon;
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium transition-all ${
+                    isActive
+                      ? 'bg-emerald-600 text-white shadow-sm shadow-emerald-700/50'
+                      : 'text-slate-300 hover:text-white hover:bg-slate-800'
+                  }`}
+                >
+                  <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-slate-400'}`} />
+                  <span>{tab.label}</span>
+                </button>
+              );
+            })}
+          </nav>
+
+          {/* Right Action / Role Picker */}
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1.5 bg-slate-950 border border-slate-800 rounded-lg p-1 text-xs">
+              <UserCheck className="w-3.5 h-3.5 text-slate-400 ml-1.5 hidden sm:block" />
+              <select
+                value={selectedRole}
+                onChange={(e) => setSelectedRole(e.target.value)}
+                className="bg-transparent text-slate-200 border-none focus:outline-none text-xs pr-2 cursor-pointer font-medium"
+              >
+                <option value="ASHA_ANM" className="bg-slate-900 text-slate-100">
+                  Frontline ASHA / ANM
+                </option>
+                <option value="MEDICAL_OFFICER" className="bg-slate-900 text-slate-100">
+                  PHC/CHC Medical Officer
+                </option>
+                <option value="FRU_SPECIALIST" className="bg-slate-900 text-slate-100">
+                  FRU Obstetric Specialist
+                </option>
+                <option value="STATE_LEADERSHIP" className="bg-slate-900 text-slate-100">
+                  NHM State Command (Dispur)
+                </option>
+              </select>
+            </div>
+
+            {/* Quick Tutorial Button on right */}
             <button
-              onClick={() => setActiveTab('admin')}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-950/80 border border-emerald-800/80 text-emerald-300 text-xs font-medium cursor-pointer hover:bg-emerald-900/60 transition-colors"
+              onClick={onOpenTutorial}
+              className="hidden md:flex items-center gap-1.5 text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-lg border border-slate-700 transition font-medium"
             >
-              <UserCheck className="w-3.5 h-3.5" />
-              <span>{adminUser.name}</span>
+              <BookOpen className="w-3.5 h-3.5 text-emerald-400" />
+              <span>Tutorial</span>
             </button>
-          ) : (
-            <button
-              onClick={onOpenAdminLogin}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-slate-200 text-xs font-medium cursor-pointer hover:bg-slate-700 transition-colors"
-            >
-              <Lock className="w-3.5 h-3.5" />
-              <span>State Login</span>
-            </button>
-          )}
+          </div>
         </div>
+      </div>
+
+      {/* Mobile Tab Strip */}
+      <div className="lg:hidden flex overflow-x-auto gap-1 px-4 py-2 bg-slate-950 border-t border-slate-800 text-xs scrollbar-none">
+        {navTabs.map((tab) => {
+          const Icon = tab.icon;
+          const isActive = activeTab === tab.id;
+          return (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md whitespace-nowrap ${
+                isActive ? 'bg-emerald-600 text-white font-medium' : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              <Icon className="w-3.5 h-3.5" />
+              <span>{tab.label}</span>
+            </button>
+          );
+        })}
       </div>
     </header>
   );
