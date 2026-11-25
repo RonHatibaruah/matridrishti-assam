@@ -23,7 +23,7 @@ Pregnancy-Induced Hypertension (PIH), pre-eclampsia, and eclampsia represent one
 │ • Uncalibrated mercury/aneroid cuffs     │ • Validated BLE digital cuffs & Optical OCR │
 │ • Severe terminal digit rounding (120/80)│ • Direct sensor auto-capture; zero tampering│
 │ • Static single-visit cutoff (140/90)    │ • Longitudinal MAP trajectory analysis     │
-│ • Missed 12-16 wk Aspirin window         │ • Early predictive risk flags <16 wks       │
+│ • Missed 12-16 wk Aspirin window         │ • Early predictive risk flags (Smaller than 16 wks) │
 │ • Paper MCP card data silos              │ • Offline-first sync with ABDM / e-Kavach   │
 │ • Uncoordinated 108 emergency calls      │ • Automated dispatch & FRU bed reservation  │
 └──────────────────────────────────────────┴─────────────────────────────────────────────┘
@@ -57,7 +57,7 @@ Where:
 - $MAP_{t_2}$ is the follow-up measurement at the routine ANC visit (Weeks 16–22).
 - $\text{GA}$ denotes the gestational age in completed weeks.
 
-**Clinical Decision Rule:** If $\text{Velocity}_{\text{MAP}} > 1.25\text{ mmHg/week}$ or absolute $MAP \ge 85\text{ mmHg}$ at 16–20 weeks gestation, the mother is stratified into the **High-Risk Pre-Eclampsia Prophylaxis Track**, triggering clinical recommendations for daily low-dose Aspirin before irreversible vascular damage occurs.
+**Clinical Decision Rule:** If $\text{Velocity}_{\text{MAP}} \text{ Greater Than } 1.25\text{ mmHg/week}$ or absolute $MAP \ge 85\text{ mmHg}$ at 16–20 weeks gestation, the mother is stratified into the **High-Risk Pre-Eclampsia Prophylaxis Track**, triggering clinical recommendations for daily low-dose Aspirin before irreversible vascular damage occurs.
 
 ---
 
@@ -99,13 +99,15 @@ With $w_{\text{critical}} = 4.5$, prioritizing sensitivity ($\ge 93.8\%$) while 
 ┌─────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────┐
 │ Triage Tier     │ Clinical & Telemetry Criteria │ Automated CDSS Protocol & Field Action                 │
 ├─────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────┤
-│ 🟢 GREEN        │ • SBP < 130 and DBP < 80 mmHg │ • Standard ANC schedule (4 routine visits)             │
-│ (Standard)      │ • MAP < 85 mmHg               │ • Dietary calcium supplementation (1.5–2.0 g/day)      │
-│                 │ • Proteinuria: Nil / Trace    │ • WhatsApp/SMS Assamese audio wellness advisories      │
+│ 🟢 GREEN        │ • SBP Smaller than 130 and    │ • Standard ANC schedule (4 routine visits)             │
+│ (Standard)      │   DBP Smaller than 80 mmHg    │ • Dietary calcium supplementation (1.5–2.0 g/day)      │
+│                 │ • MAP Smaller than 85 mmHg    │ • WhatsApp/SMS Assamese audio wellness advisories      │
+│                 │ • Proteinuria: Nil / Trace    │                                                        │
 ├─────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────┤
 │ 🟡 AMBER        │ • SBP 130–139 or DBP 80–89    │ • Shorten ANC visit interval to 14 days                │
 │ (Moderate /     │ • MAP 85–95 mmHg or           │ • Initiate Low-Dose Aspirin (75–150 mg OD) before 16w  │
-│ Gestational Htn)│   $\Delta MAP > 1.25$ mmHg/wk │ • High-Risk Pregnancy (HRP) tag on e-Kavach registry   │
+│ Gestational Htn)│   $\Delta MAP$ Greater Than   │ • High-Risk Pregnancy (HRP) tag on e-Kavach registry   │
+│                 │   1.25 mmHg/wk                │ • Home visit alert dispatched to designated ASHA       │
 │                 │ • Proteinuria: Nil to 1+      │ • Home visit alert dispatched to designated ASHA       │
 ├─────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────┤
 │ 🔴 RED          │ • SBP $\ge$ 140 or DBP $\ge$ 90│ • Immediate Medical Officer (PHC/CHC) tele-consult     │
@@ -223,12 +225,12 @@ The predictive classification pipeline was calibrated and validated against stan
 ┌───────────────────────────────────────────────┬─────────────────┬─────────────────┐
 │ Metric                                        │ Target Baseline │ MatriDrishti AI │
 ├───────────────────────────────────────────────┼─────────────────┼─────────────────┤
-│ Early Sensitivity for Pre-Eclampsia (<20 wks) │ 62.0%           │ 94.2%           │
+│ Early Sensitivity (Smaller than 20 wks)       │ 62.0%           │ 94.2%           │
 │ Specificity (Distinguishing Gestational Htn)  │ 74.5%           │ 89.6%           │
 │ Area Under ROC Curve (ROC-AUC)                │ 0.71            │ 0.938           │
-│ Frontline Terminal Digit Bias (Zero ending)   │ 48.2% (Manual)  │ < 1.0% (BLE)    │
+│ Frontline Terminal Digit Bias (Zero ending)   │ 48.2% (Manual)  │ Smaller than 1% │
 │ Emergency Referral Dispatch Latency           │ 115 minutes     │ 24 minutes      │
-│ Low-Dose Aspirin Initiation Rate (<16 wks)    │ 11.4%           │ 79.2%           │
+│ Low-Dose Aspirin Rate (Smaller than 16 wks)   │ 11.4%           │ 79.2%           │
 │ Frontline Offline Sync Integrity              │ 82.0%           │ 99.98%          │
 └───────────────────────────────────────────────┴─────────────────┴─────────────────┘
 ```

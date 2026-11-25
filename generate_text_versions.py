@@ -14,8 +14,35 @@ def clean_text_for_textarea(text):
     """
     Strips raw markdown syntax, converts formulas to plain text,
     standardizes bullets and whitespace for HTML <textarea> compatibility.
+    Removes all markup characters (< or >) and replaces them with
+    'Smaller than' and 'Greater Than'.
     """
     t = text
+    
+    # Pre-clean comparison and markup operators
+    t = re.sub(r'\\ge\b', 'Greater Than or equal to', t)
+    t = re.sub(r'\\le\b', 'Smaller than or equal to', t)
+    t = t.replace('>=', 'Greater Than or equal to')
+    t = t.replace('<=', 'Smaller than or equal to')
+    t = t.replace('&gt;', 'Greater Than')
+    t = t.replace('&lt;', 'Smaller than')
+    t = t.replace('>', 'Greater Than')
+    t = t.replace('<', 'Smaller than')
+    
+    # Clean common LaTeX syntax
+    t = t.replace(r'\Delta', 'Delta')
+    t = re.sub(r'\\frac\{2\\cdot DBP \+ SBP\}\{3\}', '(2*DBP + SBP)/3', t)
+    t = re.sub(r'\\frac\{2\s*\*\s*DBP \+ SBP\}\{3\}', '(2*DBP + SBP)/3', t)
+    t = re.sub(r'\\frac\{([^}]+)\}\{([^}]+)\}', r'(\1)/(\2)', t)
+    t = re.sub(r'\\text\{([^}]+)\}', r'\1', t)
+    t = t.replace(r'\%', '%')
+    t = t.replace(r'\_', '_')
+    t = t.replace(r'\approx', 'approx')
+    t = t.replace(r'\cdot', '*')
+    t = re.sub(r'\\text\{MgSO\}_4', 'MgSO4', t)
+    t = re.sub(r'\\text\{MgSO\}_\{4\}', 'MgSO4', t)
+    t = t.replace('MgSO_4', 'MgSO4')
+    
     lines = t.split('\n')
     cleaned_lines = []
     
@@ -42,11 +69,15 @@ def clean_text_for_textarea(text):
     t = re.sub(r'\*(.*?)\*', r'\1', t)
     t = re.sub(r'`(.*?)`', r'\1', t)
     
-    # Convert markdown links [Label](url) -> Label: url
+    # Convert markdown links [Label](url) -> Label (url)
     t = re.sub(r'\[([^\]]+)\]\(([^)]+)\)', r'\1 (\2)', t)
     
-    # Clean latex math
+    # Clean latex math $...$
     t = re.sub(r'\$([^$]+)\$', r'\1', t)
+    
+    # Final pass: Ensure absolutely zero < or > characters remain
+    t = t.replace('>', 'Greater Than')
+    t = t.replace('<', 'Smaller than')
     
     # Standardize bullet symbols
     t = re.sub(r'^[ \t]*[-*][ \t]+', '• ', t, flags=re.MULTILINE)
@@ -108,11 +139,16 @@ def generate_proposal_text():
     with open(out_file, 'w', encoding='utf-8') as f:
         f.write(full_output)
         
-    # Also copy to public/downloads/
+    # Also copy to public/downloads/ and dist/downloads/
     pub_dir = os.path.join(base_dir, 'public', 'downloads')
     os.makedirs(pub_dir, exist_ok=True)
     with open(os.path.join(pub_dir, 'NESFIC_D23_Proposal_Ron_Hatibaruah.txt'), 'w', encoding='utf-8') as f:
         f.write(full_output)
+        
+    dist_dir = os.path.join(base_dir, 'dist', 'downloads')
+    if os.path.exists(dist_dir):
+        with open(os.path.join(dist_dir, 'NESFIC_D23_Proposal_Ron_Hatibaruah.txt'), 'w', encoding='utf-8') as f:
+            f.write(full_output)
         
     print(f"Generated text version: {out_file} ({len(full_output)} bytes)")
 
@@ -143,6 +179,11 @@ def generate_pow_text():
     os.makedirs(pub_dir, exist_ok=True)
     with open(os.path.join(pub_dir, 'NESFIC_D23_Proof_of_Work_Ron_Hatibaruah.txt'), 'w', encoding='utf-8') as f:
         f.write(full_output)
+        
+    dist_dir = os.path.join(base_dir, 'dist', 'downloads')
+    if os.path.exists(dist_dir):
+        with open(os.path.join(dist_dir, 'NESFIC_D23_Proof_of_Work_Ron_Hatibaruah.txt'), 'w', encoding='utf-8') as f:
+            f.write(full_output)
         
     print(f"Generated text version: {out_file} ({len(full_output)} bytes)")
 

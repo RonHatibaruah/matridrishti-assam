@@ -22,7 +22,7 @@ PIH develops silently after 20 weeks of gestation. Without early hemodynamic det
 ### Critical Systemic Bottlenecks in Current Field Workflows
 Assam's frontline maternal network—comprising 32,000+ ASHA workers and Auxiliary Nurse Midwives (ANMs) stationed across 4,600+ Ayushman Arogya Mandirs (Health & Wellness Centres)—encounters acute operational handicaps:
 1. **Uncalibrated Manual Screening & Terminal Digit Bias:** Blood pressure assessment relies on aging manual mercury or aneroid sphygmomanometers. Frontline workers frequently round off readings (digit bias: logging 120/80 mmHg despite true physiological readings of 138/88 mmHg), masking early diastolic escalation.
-2. **Neglect of Longitudinal Mean Arterial Pressure ($MAP$) Velocity:** Current clinical practice evaluates isolated, static thresholds ($\ge$140/90 mmHg). However, an accelerated rate of change in Mean Arterial Pressure ($MAP = \frac{2\cdot DBP + SBP}{3}$) between the first and second trimesters ($\Delta MAP > 12\text{ mmHg}$) is a proven clinical biomarker of abnormal trophoblast invasion and impaired uterine spiral artery remodeling, yet remains undetected on paper Mother and Child Protection (MCP) cards.
+2. **Neglect of Longitudinal Mean Arterial Pressure ($MAP$) Velocity:** Current clinical practice evaluates isolated, static thresholds (Greater Than or equal to 140/90 mmHg). However, an accelerated rate of change in Mean Arterial Pressure ($MAP = \frac{2\cdot DBP + SBP}{3}$) between the first and second trimesters (Delta MAP Greater Than 12 mmHg) is a proven clinical biomarker of abnormal trophoblast invasion and impaired uterine spiral artery remodeling, yet remains undetected on paper Mother and Child Protection (MCP) cards.
 3. **Severe Geographic Disconnection in Chars and Tea Belts:** In flood-prone Brahmaputra river island (*char/chapori*) clusters (Dhubri, Barpeta, South Salmara) and remote tea estates (Dibrugarh, Tinsukia), expectant mothers receive irregular Antenatal Care (ANC). Consequently, pre-eclampsia is diagnosed only after neurological red flags (epigastric pain, visual scotoma, intractable headaches) or active seizures erupt.
 4. **Fragmented Emergency Referral Pathways:** When eclamptic crises occur, frontline workers encounter delayed referral communications. Transfer to First Referral Units (FRUs) or tertiary medical colleges (AMCH Dibrugarh, GMCH Guwahati) requires negotiating broken river-road connectivity and manual phone coordination with 108/102 Mrityunjoy ambulances without prior ICU bed reservation or standardized pre-referral stabilization (e.g., timely Magnesium Sulfate $\text{MgSO}_4$ loading dose).
 
@@ -38,29 +38,29 @@ Assam's frontline maternal network—comprising 32,000+ ASHA workers and Auxilia
 *(Word Count: 472 words / Limit: 500 words)*
 
 ### Proposed Solution Overview
-**MatriDrishti (মাতৃ-দৃষ্টি — Assam Maternal Hypertensive Sentinel)** is an enterprise, offline-first, AI-assisted screening, longitudinal hemodynamic tracking, and closed-loop emergency clinical decision support system (CDSS). Engineered specifically for the **Health & Family Welfare Department, Government of Assam**, and **National Health Mission (NHM), Assam**, under **NESFIC-D-23**, MatriDrishti transforms frontline ANC checkups into an intelligent early warning network hosted securely within the Assam State Data Centre (ASDC) with full Ayushman Bharat Digital Mission (ABDM) compliance.
+**MatriDrishti (মাতৃ-দৃষ্টি — Assam Maternal Hypertensive Sentinel)** is an enterprise, offline-first, AI-assisted screening, longitudinal tracking, and closed-loop emergency clinical decision support system (CDSS). Built specifically for Assam’s Health & Family Welfare Department and NHM under **NESFIC-D-23**, MatriDrishti transforms frontline ANC checkups into an intelligent early warning network hosted securely in the Assam State Data Centre (ASDC) with full ABDM compliance.
 
 ### Main Modules & Key Features
 
-1. **Smart IoT & Optical Telemetry Integration:**
-Eliminates human transcription error and terminal digit bias by pairing frontline Android smartphones via Bluetooth Low Energy (BLE GATT profile) with CDSCO-certified digital BP cuffs (Omron/Sunbeam). For legacy analog monitors, an embedded Edge-AI Computer Vision OCR engine digitizes dial and LCD values in real time directly from the phone camera, logging systolic, diastolic, and pulse rates with cryptographic timestamps.
+1. **Smart IoT & Optical Telemetry:**
+Eliminates human error and digit bias by pairing frontline Android phones via Bluetooth Low Energy (BLE GATT) with CDSCO-certified digital cuffs (Omron/Sunbeam). For legacy manual monitors, an embedded Edge-AI Computer Vision OCR engine parses dial and LCD numbers in real time directly from the phone camera, logging systolic, diastolic, and pulse rates with cryptographic timestamps.
 
-2. **Longitudinal AI Risk Stratification Engine (MAP & Hemodynamic Trajectory):**
-Rather than waiting for the acute $\ge$140/90 mmHg threshold, MatriDrishti computes the Mean Arterial Pressure ($MAP$) and tracks the gestational trajectory velocity:
+2. **Longitudinal AI Risk Stratification Engine (MAP Trajectory):**
+Rather than waiting for the acute Greater Than or equal to 140/90 mmHg threshold, MatriDrishti computes Mean Arterial Pressure ($MAP$) and tracks gestational velocity:
 $$\Delta MAP_{t} = MAP_{t} - MAP_{\text{baseline}}$$
-The engine fuses longitudinal MAP velocity with maternal age, parity, prior pre-eclampsia, BMI, and point-of-care dipstick proteinuria ($\ge 1+$ detected via computer-vision colorimetric strip analysis). An ensemble gradient-boosted classifier (XGBoost + Bayesian Clinical Network) stratifies mothers into **Green (Standard)**, **Amber (Moderate Risk / Gestational Hypertension)**, or **Red (Severe Pre-Eclampsia / Impending Eclampsia)** with a validated sensitivity $>93.8\%$.
+The engine fuses longitudinal MAP trends with maternal age, parity, prior pre-eclampsia, BMI, and dipstick proteinuria (Greater Than or equal to 1+ detected via colorimetric strip scanning). An ensemble classifier (XGBoost + Clinical Bayesian Network) stratifies mothers into **Green (Standard)**, **Amber (Moderate Risk / Gestational Hypertension)**, or **Red (Severe Pre-Eclampsia / Impending Eclampsia)** with validated sensitivity Greater Than 93.8%.
 
-3. **Offline-First Frontline Mobile Cockpit (WatermelonDB / PouchDB):**
-Architected for Assam’s zero-connectivity char islands and tea garden fringes. Frontline ASHAs and ANMs record complete ANC examinations offline in **Assamese (অসমীয়া)**, Bengali, Bodo, and Hindi. Encrypted records synchronize bidirectionally via CouchDB sync protocols whenever intermittent 2G/4G connectivity is encountered.
+3. **Offline-First Frontline Mobile Cockpit (WatermelonDB / SQLite):**
+Architected for Assam’s zero-connectivity riverine chars and tea gardens. Frontline ASHAs and ANMs record complete ANC visits offline in **Assamese (অসমীয়া)**, Bengali, Bodo, and Hindi. Encrypted records synchronize bidirectionally whenever 2G/4G connectivity is encountered.
 
 4. **Clinical Decision Support System (CDSS) for Frontline Providers:**
-Adheres strictly to Government of India (GoI) and WHO obstetric protocols. For Amber-risk mothers screened prior to 16 weeks, the system prompts ANMs to recommend **Low-Dose Aspirin (75–150 mg daily)** and elemental calcium prophylaxis to prevent pre-eclampsia development. For Red-flagged patients, the CDSS presents step-by-step emergency stabilization instructions, including oral Labetalol administration and the Pritchard Magnesium Sulfate ($\text{MgSO}_4$) loading protocol.
+Adheres strictly to GoI and WHO obstetric protocols. For Amber-risk mothers screened prior to 16 weeks, the system prompts ANMs to recommend **Low-Dose Aspirin (75–150 mg daily)** and elemental calcium prophylaxis. For Red-flagged patients, the CDSS presents step-by-step emergency instructions, including oral Labetalol and the Pritchard Magnesium Sulfate ($\text{MgSO}_4$) loading protocol.
 
 5. **Automated 108/102 Mrityunjoy Emergency Dispatch & Bed Reservation:**
-When critical pre-eclampsia is flagged, MatriDrishti automatically initiates a priority dispatch request to GVK EMRI 108/102 ambulance services, geotagging the mother’s exact rural hamlet, and alerts the nearest FRU / District Hospital obstetric emergency team to prepare Magnesium Sulfate and neonatal intensive care (SNCU) beds before patient arrival.
+When critical pre-eclampsia is flagged, MatriDrishti initiates a priority dispatch to GVK EMRI 108/102 ambulance services with exact GPS coordinates and alerts the nearest FRU / District Hospital emergency team to prepare Magnesium Sulfate and SNCU beds before patient arrival.
 
 6. **Multilingual Audio/SMS Advisory Disseminator:**
-Dispatches hyper-local, culturally tuned voice and text advisories in Assamese and local dialects directly to pregnant women and their families, educating them on danger signs (severe epigastric pain, blurred vision, sudden facial edema) to eliminate fatal home-stay delays.
+Dispatches hyper-local voice and text alerts in Assamese and local dialects directly to families, educating them on danger signs (epigastric pain, visual scotoma, facial edema) to prevent fatal home-stay delays.
 
 ---
 
@@ -71,9 +71,9 @@ Dispatches hyper-local, culturally tuned voice and text advisories in Assamese a
 1. **Frontline Screening (ASHA/ANM at Home Visit / VHSND):**  
    The ASHA opens the MatriDrishti Mobile Cockpit offline on her NHM-issued smartphone. She inputs the mother’s ABHA ID or scans the physical MCP card QR code. Pairing a CDSCO-approved BLE digital cuff, she triggers BP inflation; exact systolic (134 mmHg), diastolic (88 mmHg), and pulse rate transfer wirelessly via BLE GATT, eliminating digit bias. Next, she captures an optical image of the urine dipstick; the on-device colorimetry engine detects $1+$ Proteinuria.
 2. **Instant Edge AI Triage & Clinical Decision Support:**  
-   The local machine learning engine computes $MAP = 103.3\text{ mmHg}$ and flags a critical baseline jump ($\Delta MAP = +14.5\text{ mmHg}$ since week 12). Fusing maternal age (32), parity (Primi), and proteinuria, the cockpit flashes an **AMBER / HIGH RISK ALERT**. For gestations $<16$ weeks, the CDSS generates a formal clinical recommendation for the ANM: *"Initiate Low-Dose Aspirin 150 mg daily + Elemental Calcium 1 g/day per GoI Guidelines."*
+   The local machine learning engine computes $MAP = 103.3\text{ mmHg}$ and flags a critical baseline jump ($\Delta MAP = +14.5\text{ mmHg}$ since week 12). Fusing maternal age (32), parity (Primi), and proteinuria, the cockpit flashes an **AMBER / HIGH RISK ALERT**. For gestations Smaller than 16 weeks, the CDSS generates a formal clinical recommendation for the ANM: *"Initiate Low-Dose Aspirin 150 mg daily + Elemental Calcium 1 g/day per GoI Guidelines."*
 3. **Escalation, Emergency Dispatch & Hospital Readiness (Red Flag):**  
-   If the mother exhibits neurological symptoms (severe frontal headache, visual scotoma) or $DBP \ge 110\text{ mmHg}$, the system escalates to **RED ALERT (Impending Eclampsia)**. The app guides the ANM through the Pritchard $\text{MgSO}_4$ intramuscular/intravenous loading dose checklist. Simultaneously, MatriDrishti broadcasts a priority API dispatch payload to GVK EMRI 108 Mrityunjoy with exact GPS coordinates and transmits an HL7 FHIR emergency admission dossier to the nearest FRU (e.g., AMCH Dibrugarh), pre-reserving an obstetric ICU bed and alerting on-duty obstetricians.
+   If the mother exhibits neurological symptoms (severe frontal headache, visual scotoma) or DBP Greater Than or equal to 110 mmHg, the system escalates to **RED ALERT (Impending Eclampsia)**. The app guides the ANM through the Pritchard $\text{MgSO}_4$ intramuscular/intravenous loading dose checklist. Simultaneously, MatriDrishti broadcasts a priority API dispatch payload to GVK EMRI 108 Mrityunjoy with exact GPS coordinates and transmits an HL7 FHIR emergency admission dossier to the nearest FRU (e.g., AMCH Dibrugarh), pre-reserving an obstetric ICU bed and alerting on-duty obstetricians.
 4. **Post-Discharge Closed-Loop Monitoring:**  
    Following delivery and stabilization, the system enrolls the mother into a 42-day postpartum hypertensive surveillance regimen, pushing automated bilingual Assamese IVR voice calls to verify blood pressure resolution.
 
@@ -178,7 +178,7 @@ MatriDrishti follows an **Agile Clinical Spiral Framework** combining rapid soft
    - Provision secure containerized staging environments within the Assam State Data Centre (ASDC).
    - Generate synthetic longitudinal maternal cohorts (10,000 simulated pregnancies) matching Assam’s demographic, parity, and hemodynamic profiles.
    - Conduct chaos-engineering resilience testing: simulate complete network blackouts, queuing 5,000 offline screening encounters in local SQLite/WatermelonDB storage and verifying zero-loss reconciliation upon simulated 2G reconnect.
-   - *Key Output:* ASDC Staging Deployment, Tested ML Pipeline ($AUC > 0.93$), and VAPT Security Report.
+   - *Key Output:* ASDC Staging Deployment, Tested ML Pipeline (AUC Greater Than 0.93), and VAPT Security Report.
 
 4. **Field MVP Pilot & Rapid Feedback Loop (Months 6–8):**
    - Procure and deploy 600 BLE BP kits across two contrasting high-vulnerability testbeds: **Dibrugarh** (40 tea estate hospitals) and **Barpeta** (35 riverine char Sub-Centres).
@@ -248,7 +248,7 @@ To develop, calibrate, and validate MatriDrishti without violating patient priva
    - *Parameters:* Systolic Blood Pressure (SBP, mmHg), Diastolic Blood Pressure (DBP, mmHg), Pulse Rate (BPM), and derived Mean Arterial Pressure ($MAP = \frac{2\cdot DBP + SBP}{3}$).
    - *Format:* Structured JSON payloads conforming to IEEE 11073-10407 health device communication standards, ingested directly via BLE GATT or on-device OCR.
 2. **Point-of-Care Diagnostic Urine Protein:**
-   - *Parameters:* Proteinuria grading (Negative, Trace, 1+ [30 mg/dL], 2+ [100 mg/dL], 3+ [300 mg/dL], 4+ [$\ge$1000 mg/dL]).
+   - *Parameters:* Proteinuria grading (Negative, Trace, 1+ [30 mg/dL], 2+ [100 mg/dL], 3+ [300 mg/dL], 4+ [Greater Than or equal to 1000 mg/dL]).
    - *Format:* RGB colorimetric values and categorical string enums logged from optical test strip scanning.
 3. **Maternal Longitudinal Clinical Profile:**
    - *Parameters:* Gestational age (weeks/days based on Last Menstrual Period / early dating ultrasound), maternal age, parity, previous history of pre-eclampsia/eclampsia, chronic hypertension, pre-gestational diabetes, and baseline Body Mass Index (BMI).
@@ -415,7 +415,7 @@ MatriDrishti is engineered to comply strictly with India’s stringent health da
 *(Word Count: 462 words / Limit: 500 words)*
 
 ### Core Novelty & Technological Leap
-MatriDrishti transforms maternal hypertensive management from a reactive emergency response into a predictive closed-loop sentinel. While conventional systems detect pre-eclampsia only after overt clinical hypertension ($\ge$140/90 mmHg) or seizures, MatriDrishti detects subclinical vascular pathology weeks earlier through three innovations:
+MatriDrishti transforms maternal hypertensive management from a reactive emergency response into a predictive closed-loop sentinel. While conventional systems detect pre-eclampsia only after overt clinical hypertension (Greater Than or equal to 140/90 mmHg) or seizures, MatriDrishti detects subclinical vascular pathology weeks earlier through three innovations:
 
 1. **Longitudinal Hemodynamic Velocity vs. Static Cutoffs:**
 Clinical practice treats blood pressure as a cross-sectional value. A mother with 134/86 mmHg is deemed "normotensive." Yet, if her baseline BP was 100/62 mmHg, her Mean Arterial Pressure ($MAP$) has surged by $+23.3\text{ mmHg}$—signaling placental hypoxia and maternal systemic endothelial damage. MatriDrishti is India's first frontline tool implementing **$\Delta MAP$ velocity tracking**:
@@ -432,7 +432,7 @@ National systems (RCH, e-Kavach) function as passive archives rather than real-t
 
 | Dimension | Legacy MCP Cards | National Portals (RCH/e-Kavach) | Commercial Apps | **MatriDrishti (মাতৃ-দৃষ্টি)** |
 |---|---|---|---|---|
-| **Diagnostic Basis** | Static cutoff ($\ge 140/90$) | Retrospective entry | Self-reported | **Longitudinal $\Delta MAP$ Velocity + Urine Protein** |
+| **Diagnostic Basis** | Static cutoff (Greater Than or equal to 140/90) | Retrospective entry | Self-reported | **Longitudinal $\Delta MAP$ Velocity + Urine Protein** |
 | **Telemetry Ingestion** | Pen and paper | Manual keyboard | Manual typing | **Automated BLE Sync + Edge OCR** |
 | **Terminal Digit Bias** | Severe ($\approx 72\%$ rounded) | Unchecked | Frequent errors | **Eliminated (Hardware Telemetry)** |
 | **Offline Operation** | Physical paper | Frequent sync failure | Requires 4G/WiFi | **Zero-Loss SQLite Sync for Chars/Tea Belts** |
@@ -491,8 +491,8 @@ The proposed budget strictly respects the **₹40.00 Lakh** statutory ceiling of
 
 ### Structured Pilot Validation Plan
 Validation will proceed across two distinct, high-vulnerability environments in Assam:
-- **Phase A (Months 4–6):** Two-district validation in **Dibrugarh** (40 tea estate hospitals under AMCH) and **Barpeta** (35 riverine char Sub-Centres). 600 BLE kits deployed, tracking 6,000 pregnant women to validate diagnostic sensitivity ($\ge 93\%$) and measure digit bias reduction.
-- **Phase B (Months 7–9):** Scaled multi-district validation across **Tinsukia, Dhubri, and Sonitpur**, expanding cohort to 45,000 pregnancies, verifying 108 ambulance dispatch linkage, and targeting **$>60\%$ increase in early detection** and **$>35\%$ reduction in eclamptic convulsions**.
+- **Phase A (Months 4–6):** Two-district validation in **Dibrugarh** (40 tea estate hospitals under AMCH) and **Barpeta** (35 riverine char Sub-Centres). 600 BLE kits deployed, tracking 6,000 pregnant women to validate diagnostic sensitivity (Greater Than or equal to 93%) and measure digit bias reduction.
+- **Phase B (Months 7–9):** Scaled multi-district validation across **Tinsukia, Dhubri, and Sonitpur**, expanding cohort to 45,000 pregnancies, verifying 108 ambulance dispatch linkage, and targeting **Greater Than 60% increase in early detection** and **Greater Than 35% reduction in eclamptic convulsions**.
 
 ---
 

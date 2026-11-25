@@ -31,7 +31,7 @@ MatriDrishti (মাতৃ-দৃষ্টি) is an enterprise, offline-first d
 │ • Uncalibrated mercury/aneroid cuffs     │ • Validated BLE digital cuffs & Optical OCR │
 │ • Severe terminal digit rounding (120/80)│ • Direct sensor auto-capture; zero tampering│
 │ • Static single-visit cutoff (140/90)    │ • Longitudinal MAP trajectory analysis     │
-│ • Missed 12-16 wk Aspirin window         │ • Early predictive risk flags <16 wks       │
+│ • Missed 12-16 wk Aspirin window         │ • Early predictive risk flags (Smaller than 16 wks) │
 │ • Paper MCP card data silos              │ • Offline-first sync with ABDM / e-Kavach   │
 │ • Uncoordinated 108 emergency calls      │ • Automated dispatch & FRU bed reservation  │
 └──────────────────────────────────────────┴─────────────────────────────────────────────┘
@@ -44,26 +44,26 @@ Hypertensive disorders of pregnancy develop along a well-defined pathological ti
 1. Defective Trophoblast Invasion (Weeks 8–14): Inadequate remodeling of maternal uterine spiral arteries results in high-resistance, low-capacitance placental perfusion.
 2. Placental Ischemia & Anti-Angiogenic Release (Weeks 14–20): Hypoxic trophoblasts release soluble fms-like tyrosine kinase-1 (sFlt-1) and soluble endoglin (sEng), which bind and neutralize pro-angiogenic factors (VEGF and PlGF).
 3. Maternal Endothelial Dysfunction & Diastolic Escalation (Weeks 18–24): Systemic vasoconstriction, capillary leak, and impaired autoregulation occur before overt systolic spikes.
-4. Overt Clinical Disease (Weeks 24+): New-onset hypertension (\ge 140/90\text{ mmHg}), proteinuria, organ damage (liver, kidneys, brain), progressing to eclamptic seizures, HELLP syndrome, or placental abruption.
+4. Overt Clinical Disease (Weeks 24+): New-onset hypertension (Greater Than or equal to 140/90 mmHg), proteinuria, organ damage (liver, kidneys, brain), progressing to eclamptic seizures, HELLP syndrome, or placental abruption.
 
 1.2 Mathematical Formulation of Mean Arterial Pressure (MAP)
 Conventional screening relies on systolic blood pressure (SBP) or diastolic blood pressure (DBP) thresholds independently. However, physiological studies establish that the Mean Arterial Pressure (MAP) represents the true perfusion pressure across maternal vascular beds and serves as a superior early predictor of pre-eclampsia:
 
-$MAP = DBP + \frac{1}{3}(SBP - DBP) = \frac{2 \cdot DBP + SBP}{3}
+$MAP = DBP + (1)/(3)(SBP - DBP) = (2 * DBP + SBP)/(3)
 
 In healthy normotensive pregnancies, maternal systemic vascular resistance falls during the second trimester due to progesterone-mediated vasodilation, causing a physiological dip in MAP between weeks 16 and 22. In contrast, women destined to develop PIH or pre-eclampsia fail to exhibit this mid-trimester dip; instead, their MAP exhibits an early positive trajectory.
 
-1.3 Longitudinal Hemodynamic Trajectory Velocity (\Delta MAP / \Delta t)
+1.3 Longitudinal Hemodynamic Trajectory Velocity (Delta MAP / Delta t)
 MatriDrishti models the velocity of arterial pressure escalation relative to baseline gestational measurements:
 
-\text{Velocity}_{\text{MAP}} = \frac{MAP_{t_2} - MAP_{t_1}}{\text{GA}_{t_2} - \text{GA}_{t_1}} \quad \left[\text{mmHg per gestational week}\right]
+Velocity_{MAP} = \frac{MAP_{t_2} - MAP_{t_1}}{GA_{t_2} - GA_{t_1}} \quad \left[mmHg per gestational week\right]
 
 Where:
 • MAP_{t_1} is the baseline Mean Arterial Pressure recorded at initial booking (Weeks 10–14).
 • MAP_{t_2} is the follow-up measurement at the routine ANC visit (Weeks 16–22).
-• \text{GA} denotes the gestational age in completed weeks.
+• GA denotes the gestational age in completed weeks.
 
-Clinical Decision Rule: If \text{Velocity}_{\text{MAP}} > 1.25\text{ mmHg/week} or absolute MAP \ge 85\text{ mmHg} at 16–20 weeks gestation, the mother is stratified into the High-Risk Pre-Eclampsia Prophylaxis Track, triggering clinical recommendations for daily low-dose Aspirin before irreversible vascular damage occurs.
+Clinical Decision Rule: If Velocity_{MAP}  Greater Than  1.25 mmHg/week or absolute MAP Greater Than or equal to 85 mmHg at 16–20 weeks gestation, the mother is stratified into the High-Risk Pre-Eclampsia Prophylaxis Track, triggering clinical recommendations for daily low-dose Aspirin before irreversible vascular damage occurs.
 
 🤖 2. Machine Learning Risk Stratification Architecture
 
@@ -71,31 +71,31 @@ Clinical Decision Rule: If \text{Velocity}_{\text{MAP}} > 1.25\text{ mmHg/week} 
 MatriDrishti utilizes an ensemble classifier combining an Extreme Gradient Boosting (XGBoost) model with a Bayesian Clinical Decision Network. The model ingests a structured 18-dimensional feature vector \mathbf{x}_i:
 
 \mathbf{x}_i = \begin{bmatrix}
-\text{MAP}_{\text{current}} \\
-\Delta \text{MAP}_{\text{velocity}} \\
-\text{SBP}_{\text{current}}, \text{DBP}_{\text{current}} \\
-\text{Pulse Pressure} = (SBP - DBP) \\
-\text{Gestational Age (weeks)} \\
-\text{Maternal Age (years)} \\
-\text{Parity (Nulliparous vs. Multiparous)} \\
-\text{Prior History of PIH / Eclampsia} \\
-\text{Pre-pregnancy BMI / Mid-Upper Arm Circumference (MUAC)} \\
-\text{Family History of Chronic Hypertension / Preeclampsia} \\
-\text{Dipstick Proteinuria Level } (0, \text{Trace}, 1+, 2+, 3+, 4+) \\
-\text{Symptomatic Red Flags: Persistent Headache } (0/1) \\
-\text{Symptomatic Red Flags: Visual Scotoma / Blurring } (0/1) \\
-\text{Symptomatic Red Flags: Epigastric / Right Upper Quadrant Pain } (0/1) \\
-\text{Symptomatic Red Flags: Rapid Facial / Pedal Edema } (0/1) \\
-\text{Vulnerability Factor: Tea Garden Estate Resident } (0/1) \\
-\text{Vulnerability Factor: Riverine Char Island / Boat Clinic Access } (0/1)
+MAP_{current} \\
+Delta MAP_{velocity} \\
+SBP_{current}, DBP_{current} \\
+Pulse Pressure = (SBP - DBP) \\
+Gestational Age (weeks) \\
+Maternal Age (years) \\
+Parity (Nulliparous vs. Multiparous) \\
+Prior History of PIH / Eclampsia \\
+Pre-pregnancy BMI / Mid-Upper Arm Circumference (MUAC) \\
+Family History of Chronic Hypertension / Preeclampsia \\
+Dipstick Proteinuria Level  (0, Trace, 1+, 2+, 3+, 4+) \\
+Symptomatic Red Flags: Persistent Headache  (0/1) \\
+Symptomatic Red Flags: Visual Scotoma / Blurring  (0/1) \\
+Symptomatic Red Flags: Epigastric / Right Upper Quadrant Pain  (0/1) \\
+Symptomatic Red Flags: Rapid Facial / Pedal Edema  (0/1) \\
+Vulnerability Factor: Tea Garden Estate Resident  (0/1) \\
+Vulnerability Factor: Riverine Char Island / Boat Clinic Access  (0/1)
 \end{bmatrix}
 
 2.2 Objective Loss Function & Quantile Risk Calibration
-Because false negatives in pre-eclampsia screening carry catastrophic maternal-fetal mortality risks, the classifier is optimized using an asymmetric weighted cross-entropy loss function \mathcal{L}_{\text{clinical}} that heavily penalizes missed high-risk cases:
+Because false negatives in pre-eclampsia screening carry catastrophic maternal-fetal mortality risks, the classifier is optimized using an asymmetric weighted cross-entropy loss function \mathcal{L}_{clinical} that heavily penalizes missed high-risk cases:
 
-\mathcal{L}_{\text{clinical}} = - \frac{1}{N} \sum_{i=1}^N \left[ w_{\text{critical}} \cdot y_i \log(\hat{p}_i) + (1 - y_i) \log(1 - \hat{p}_i) \right]
+\mathcal{L}_{clinical} = - (1)/(N) \sum_{i=1}^N \left[ w_{critical} * y_i \log(\hat{p}_i) + (1 - y_i) \log(1 - \hat{p}_i) \right]
 
-With w_{\text{critical}} = 4.5, prioritizing sensitivity (\ge 93.8\%) while maintaining false alarm specificity at \ge 89.2\%.
+With w_{critical} = 4.5, prioritizing sensitivity (Greater Than or equal to 93.8%) while maintaining false alarm specificity at Greater Than or equal to 89.2%.
 
 2.3 Three-Tier Clinical Triage Matrix
 
@@ -103,18 +103,20 @@ With w_{\text{critical}} = 4.5, prioritizing sensitivity (\ge 93.8\%) while main
 ┌─────────────────┬───────────────────────────────┬────────────────────────────────────────────────────────┐
 │ Triage Tier     │ Clinical & Telemetry Criteria │ Automated CDSS Protocol & Field Action                 │
 ├─────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────┤
-│ 🟢 GREEN        │ • SBP < 130 and DBP < 80 mmHg │ • Standard ANC schedule (4 routine visits)             │
-│ (Standard)      │ • MAP < 85 mmHg               │ • Dietary calcium supplementation (1.5–2.0 g/day)      │
-│                 │ • Proteinuria: Nil / Trace    │ • WhatsApp/SMS Assamese audio wellness advisories      │
+│ 🟢 GREEN        │ • SBP Smaller than 130 and    │ • Standard ANC schedule (4 routine visits)             │
+│ (Standard)      │   DBP Smaller than 80 mmHg    │ • Dietary calcium supplementation (1.5–2.0 g/day)      │
+│                 │ • MAP Smaller than 85 mmHg    │ • WhatsApp/SMS Assamese audio wellness advisories      │
+│                 │ • Proteinuria: Nil / Trace    │                                                        │
 ├─────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────┤
 │ 🟡 AMBER        │ • SBP 130–139 or DBP 80–89    │ • Shorten ANC visit interval to 14 days                │
 │ (Moderate /     │ • MAP 85–95 mmHg or           │ • Initiate Low-Dose Aspirin (75–150 mg OD) before 16w  │
-│ Gestational Htn)│   \Delta MAP > 1.25 mmHg/wk │ • High-Risk Pregnancy (HRP) tag on e-Kavach registry   │
+│ Gestational Htn)│   Delta MAP Greater Than   │ • High-Risk Pregnancy (HRP) tag on e-Kavach registry   │
+│                 │   1.25 mmHg/wk                │ • Home visit alert dispatched to designated ASHA       │
 │                 │ • Proteinuria: Nil to 1+      │ • Home visit alert dispatched to designated ASHA       │
 ├─────────────────┼───────────────────────────────┼────────────────────────────────────────────────────────┤
-│ 🔴 RED          │ • SBP \ge 140 or DBP \ge 90│ • Immediate Medical Officer (PHC/CHC) tele-consult     │
-│ (Severe /       │ • MAP \ge 96 mmHg or        │ • Initiate oral Labetalol 100 mg BD if SBP \ge 150   │
-│ Impending       │ • Proteinuria \ge 2+ or     │ • Administer Pritchard \text{MgSO}_4 loading dose   │
+│ 🔴 RED          │ • SBP Greater Than or equal to 140 or DBP Greater Than or equal to 90│ • Immediate Medical Officer (PHC/CHC) tele-consult     │
+│ (Severe /       │ • MAP Greater Than or equal to 96 mmHg or        │ • Initiate oral Labetalol 100 mg BD if SBP Greater Than or equal to 150   │
+│ Impending       │ • Proteinuria Greater Than or equal to 2+ or     │ • Administer Pritchard MgSO4 loading dose   │
 │ Eclampsia)      │ • Neurological danger signs   │ • Automated priority 108 ambulance dispatch to FRU     │
 └─────────────────┴───────────────────────────────┴────────────────────────────────────────────────────────┘
 `
@@ -133,7 +135,7 @@ Human measurement error and round-number bias (e.g., recording 120/80 mmHg despi
 • Octets 7–8: Pulse Rate in bpm (uint16)
 
 3.2 Optical Character Recognition (OCR) Fallback for Legacy Monitors
-Where wireless BLE cuffs are temporarily unavailable, the MatriDrishti mobile app incorporates an on-device Edge-AI Computer Vision model (MobileNetV3-OCR). The ASHA worker holds the smartphone over the digital monitor display; the model extracts digits with bounding boxes, verifies physiological bounds (60 \le SBP \le 260, 40 \le DBP \le 160), and prevents manual override without supervisory override justification.
+Where wireless BLE cuffs are temporarily unavailable, the MatriDrishti mobile app incorporates an on-device Edge-AI Computer Vision model (MobileNetV3-OCR). The ASHA worker holds the smartphone over the digital monitor display; the model extracts digits with bounding boxes, verifies physiological bounds (60 Smaller than or equal to SBP Smaller than or equal to 260, 40 Smaller than or equal to DBP Smaller than or equal to 160), and prevents manual override without supervisory override justification.
 
 3.3 Zero-Data-Loss Offline Synchronization in Char & Tea Garden Belts
 Assam’s 2,500+ riverine char sandbars and remote tea estates routinely suffer complete cellular blackouts. MatriDrishti utilizes an offline-first reactive data architecture:
@@ -179,11 +181,11 @@ Step 1: Clinical Red Flag Triggered
         • Magnesium Sulfate and Neonatal Resuscitation warmer pre-heated
 `
 
-4.1 Pre-Referral Stabilization Protocol: Pritchard Magnesium Sulfate (\text{MgSO}_4)
+4.1 Pre-Referral Stabilization Protocol: Pritchard Magnesium Sulfate (MgSO4)
 Frontline ANMs are empowered with interactive, step-by-step guidance on administering the life-saving pre-referral loading dose under Medical Officer tele-supervision:
 • Loading Dose: 4g IV (20% solution over 5–10 minutes) + 10g IM (5g in each buttock, 50% deep IM injection with 1ml 2% lignocaine).
 • Antidote Readiness Check: Mandatory verification that 10% Calcium Gluconate (10ml IV) is readily available in the ASHA/ANM emergency kit.
-• Toxicity Monitoring Checkpoints: Verification of patellar (knee jerk) reflex presence, respiratory rate \ge 16 breaths/min, and hourly urine output \ge 30\text{ ml/hr}$.
+• Toxicity Monitoring Checkpoints: Verification of patellar (knee jerk) reflex presence, respiratory rate Greater Than or equal to 16 breaths/min, and hourly urine output Greater Than or equal to 30 ml/hr$.
 
 🗺️ 5. Assam Statewide Epidemiological Geospatial Intelligence
 
@@ -217,12 +219,12 @@ The predictive classification pipeline was calibrated and validated against stan
 ┌───────────────────────────────────────────────┬─────────────────┬─────────────────┐
 │ Metric                                        │ Target Baseline │ MatriDrishti AI │
 ├───────────────────────────────────────────────┼─────────────────┼─────────────────┤
-│ Early Sensitivity for Pre-Eclampsia (<20 wks) │ 62.0%           │ 94.2%           │
+│ Early Sensitivity (Smaller than 20 wks)       │ 62.0%           │ 94.2%           │
 │ Specificity (Distinguishing Gestational Htn)  │ 74.5%           │ 89.6%           │
 │ Area Under ROC Curve (ROC-AUC)                │ 0.71            │ 0.938           │
-│ Frontline Terminal Digit Bias (Zero ending)   │ 48.2% (Manual)  │ < 1.0% (BLE)    │
+│ Frontline Terminal Digit Bias (Zero ending)   │ 48.2% (Manual)  │ Smaller than 1% │
 │ Emergency Referral Dispatch Latency           │ 115 minutes     │ 24 minutes      │
-│ Low-Dose Aspirin Initiation Rate (<16 wks)    │ 11.4%           │ 79.2%           │
+│ Low-Dose Aspirin Rate (Smaller than 16 wks)   │ 11.4%           │ 79.2%           │
 │ Frontline Offline Sync Integrity              │ 82.0%           │ 99.98%          │
 └───────────────────────────────────────────────┴─────────────────┴─────────────────┘
 `
