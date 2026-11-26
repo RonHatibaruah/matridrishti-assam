@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Home,
   HeartPulse,
   Activity,
   MapPin,
@@ -8,8 +9,9 @@ import {
   BarChart3,
   BookOpen,
   FileText,
-  ShieldCheck,
-  UserCheck
+  UserCheck,
+  CheckCircle2,
+  ChevronDown
 } from 'lucide-react';
 import { ClinicalUser } from '../types/maternal';
 
@@ -35,72 +37,89 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenLoginModal
 }) => {
   const navTabs = [
-    { id: 'cockpit', label: 'Screening Cockpit', icon: HeartPulse, badge: 'Live BLE' },
-    { id: 'trajectories', label: 'MAP Trajectories', icon: Activity, badge: 'AI Model' },
-    { id: 'surveillance', label: 'Assam Geospatial Map', icon: MapPin, badge: '35 Dists' },
-    { id: 'referrals', label: '108 Referral Hub', icon: Ambulance, badge: 'Emergency' },
-    { id: 'advisory', label: 'Audio & Advisory', icon: Radio, badge: 'Bilingual' },
-    { id: 'command', label: 'NHM State Command', icon: BarChart3, badge: 'Leadership' }
+    { id: 'home', label: 'Overview', icon: Home },
+    { id: 'cockpit', label: 'Screening Cockpit', icon: HeartPulse },
+    { id: 'trajectories', label: 'MAP Trajectory', icon: Activity },
+    { id: 'surveillance', label: 'Assam Map', icon: MapPin },
+    { id: 'referrals', label: '108 Referral', icon: Ambulance },
+    { id: 'advisory', label: 'Advisory Engine', icon: Radio },
+    { id: 'command', label: 'State Command', icon: BarChart3 }
   ];
 
   return (
-    <header className="bg-slate-900 border-b border-slate-800 sticky top-0 z-50 shadow-md">
-      {/* Top Government Strip */}
-      <div className="bg-gradient-to-r from-emerald-950 via-slate-900 to-teal-950 px-4 py-1.5 border-b border-emerald-900/40 text-xs text-slate-300">
+    <header className="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-xs">
+      {/* 1. TOP OFFICIAL GOVERNMENT STRIP (Clean Light Design) */}
+      <div className="bg-slate-50 border-b border-slate-200 px-4 py-1 text-xs text-slate-600">
         <div className="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
+          {/* Left: Department Attribution */}
           <div className="flex items-center gap-2">
-            <span className="font-semibold text-emerald-400">Government of Assam</span>
-            <span className="text-slate-500">•</span>
-            <span>Health & Family Welfare Department & National Health Mission (NHM)</span>
-            <span className="text-slate-500">•</span>
-            <span className="bg-emerald-900/60 text-emerald-300 px-2 py-0.5 rounded text-[11px] font-mono border border-emerald-700/50">
-              NESFIC-D-23: Early Detection of PIH
+            <span className="font-semibold text-slate-900">Government of Assam</span>
+            <span className="text-slate-300">•</span>
+            <span>Health & Family Welfare Dept & NHM Assam</span>
+            <span className="text-slate-300">•</span>
+            <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-mono font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
+              NESFIC-D-23: Early PIH Detection
             </span>
           </div>
 
-          <div className="flex items-center gap-2">
-            {/* Prominent Tutorial Link */}
+          {/* Right: Quick Links & Gateway Status */}
+          <div className="flex items-center gap-3">
             <button
               onClick={onOpenTutorial}
-              className="flex items-center gap-1.5 text-emerald-300 hover:text-white transition-colors bg-emerald-900/60 hover:bg-emerald-800 px-2.5 py-1 rounded-md border border-emerald-700 font-medium text-[11px]"
-              title="What the application is and how to use it"
+              className="inline-flex items-center gap-1 text-[11px] font-medium text-slate-600 hover:text-emerald-700 transition"
+              title="Application tutorial and step-by-step user guide"
             >
-              <BookOpen className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Tutorial: What It Is & How to Use</span>
+              <BookOpen className="w-3.5 h-3.5 text-emerald-600" />
+              <span>Tutorial Guide</span>
             </button>
 
-            {/* Copy-Paste Text Dossier Link */}
+            <span className="text-slate-300">|</span>
+
             <button
               onClick={onOpenTextDossier}
-              className="flex items-center gap-1.5 text-cyan-300 hover:text-white transition-colors bg-cyan-950/70 hover:bg-cyan-900 px-2.5 py-1 rounded-md border border-cyan-800 font-medium text-[11px]"
-              title="Copy-paste ready plain text versions of the proposal"
+              className="inline-flex items-center gap-1 text-[11px] font-medium text-slate-600 hover:text-cyan-700 transition"
+              title="Copy-paste ready 12 proposal fields"
             >
-              <FileText className="w-3.5 h-3.5 text-cyan-400" />
-              <span className="hidden sm:inline">Copy Text Dossier</span>
+              <FileText className="w-3.5 h-3.5 text-cyan-600" />
+              <span>Copy Text Dossier</span>
             </button>
+
+            <span className="text-slate-300">|</span>
+
+            <div className="hidden sm:inline-flex items-center gap-1.5 text-[11px] text-slate-600 font-mono">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>ABDM Synced</span>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Main Navigation Bar */}
+      {/* 2. MAIN NAVIGATION BAR (Crisp White Background) */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo & Platform Name */}
-          <div className="flex items-center gap-3 cursor-pointer" onClick={() => setActiveTab('cockpit')}>
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 via-teal-600 to-cyan-700 flex items-center justify-center shadow-lg shadow-emerald-950/50 border border-emerald-400/30">
-              <HeartPulse className="w-6 h-6 text-white animate-pulse" />
+          {/* Brand Logo & Title */}
+          <div
+            className="flex items-center gap-3 cursor-pointer group"
+            onClick={() => setActiveTab('home')}
+            title="Return to MatriDrishti Overview"
+          >
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-600 via-teal-700 to-cyan-800 flex items-center justify-center shadow-sm shadow-emerald-800/20 group-hover:scale-105 transition">
+              <HeartPulse className="w-5 h-5 text-white" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-lg font-bold tracking-tight text-white">
-                  MatriDrishti <span className="text-emerald-400 font-normal">মাতৃ-দৃষ্টি</span>
+                <span className="text-lg font-bold tracking-tight text-slate-900 group-hover:text-emerald-700 transition">
+                  MatriDrishti
                 </span>
-                <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                <span className="text-sm font-semibold text-emerald-700">
+                  মাতৃ-দৃষ্টি
+                </span>
+                <span className="hidden sm:inline-block text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200">
                   PIH Sentinel
                 </span>
               </div>
-              <p className="text-[11px] text-slate-400">
-                Assam Maternal Hypertensive Intelligence & Early Pre-Eclampsia Network
+              <p className="text-[11px] text-slate-500 hidden sm:block">
+                Assam Maternal Hypertensive Intelligence Network
               </p>
             </div>
           </div>
@@ -114,13 +133,13 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium transition-all ${
+                  className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all ${
                     isActive
-                      ? 'bg-emerald-600 text-white shadow-sm shadow-emerald-700/50'
-                      : 'text-slate-300 hover:text-white hover:bg-slate-800'
+                      ? 'bg-emerald-50 text-emerald-800 border border-emerald-200 shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                   }`}
                 >
-                  <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-slate-400'}`} />
+                  <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-emerald-700' : 'text-slate-400'}`} />
                   <span>{tab.label}</span>
                 </button>
               );
@@ -128,43 +147,46 @@ export const Navbar: React.FC<NavbarProps> = ({
           </nav>
 
           {/* Right Action / Role Picker */}
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1.5 bg-slate-950 border border-slate-800 rounded-lg p-1 text-xs">
-              <UserCheck className="w-3.5 h-3.5 text-slate-400 ml-1.5 hidden sm:block" />
+          <div className="flex items-center gap-2.5">
+            {/* Clean Role Selector */}
+            <div className="flex items-center gap-1.5 bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-slate-700 shadow-xs hover:border-slate-300 transition">
+              <UserCheck className="w-3.5 h-3.5 text-emerald-600 hidden sm:block" />
               <select
                 value={selectedRole}
                 onChange={(e) => setSelectedRole(e.target.value)}
-                className="bg-transparent text-slate-200 border-none focus:outline-none text-xs pr-2 cursor-pointer font-medium"
+                className="bg-transparent text-slate-800 border-none focus:outline-none text-xs cursor-pointer font-semibold"
               >
-                <option value="ASHA_ANM" className="bg-slate-900 text-slate-100">
-                  Frontline ASHA / ANM
-                </option>
-                <option value="MEDICAL_OFFICER" className="bg-slate-900 text-slate-100">
-                  PHC/CHC Medical Officer
-                </option>
-                <option value="FRU_SPECIALIST" className="bg-slate-900 text-slate-100">
-                  FRU Obstetric Specialist
-                </option>
-                <option value="STATE_LEADERSHIP" className="bg-slate-900 text-slate-100">
-                  NHM State Command (Dispur)
-                </option>
+                <option value="ASHA_ANM">Role: Frontline ASHA / ANM</option>
+                <option value="MEDICAL_OFFICER">Role: PHC Medical Officer</option>
+                <option value="FRU_SPECIALIST">Role: FRU Specialist</option>
+                <option value="STATE_LEADERSHIP">Role: NHM State Command</option>
               </select>
             </div>
 
-            {/* Quick Tutorial Button on right */}
-            <button
-              onClick={onOpenTutorial}
-              className="hidden md:flex items-center gap-1.5 text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-lg border border-slate-700 transition font-medium"
-            >
-              <BookOpen className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Tutorial</span>
-            </button>
+            {/* Quick Action Button */}
+            {activeTab === 'home' ? (
+              <button
+                onClick={() => setActiveTab('cockpit')}
+                className="inline-flex items-center gap-1.5 text-xs bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-2 rounded-lg shadow-xs transition"
+              >
+                <HeartPulse className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Launch Cockpit</span>
+              </button>
+            ) : (
+              <button
+                onClick={() => setActiveTab('home')}
+                className="inline-flex items-center gap-1.5 text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-3 py-2 rounded-lg transition"
+              >
+                <Home className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Overview</span>
+              </button>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Mobile Tab Strip */}
-      <div className="lg:hidden flex overflow-x-auto gap-1 px-4 py-2 bg-slate-950 border-t border-slate-800 text-xs scrollbar-none">
+      {/* 3. MOBILE TAB SCROLLER (Clean White Design) */}
+      <div className="lg:hidden flex overflow-x-auto gap-1.5 px-4 py-2 bg-slate-50 border-t border-slate-200 text-xs scrollbar-none">
         {navTabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -172,11 +194,13 @@ export const Navbar: React.FC<NavbarProps> = ({
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md whitespace-nowrap ${
-                isActive ? 'bg-emerald-600 text-white font-medium' : 'text-slate-400 hover:text-slate-200'
+              className={`flex items-center gap-1 px-2.5 py-1.5 rounded-md whitespace-nowrap text-xs font-medium transition ${
+                isActive
+                  ? 'bg-emerald-600 text-white font-bold shadow-xs'
+                  : 'text-slate-600 bg-white border border-slate-200 hover:text-slate-900'
               }`}
             >
-              <Icon className="w-3.5 h-3.5" />
+              <Icon className="w-3 h-3" />
               <span>{tab.label}</span>
             </button>
           );
